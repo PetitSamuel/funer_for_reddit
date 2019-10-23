@@ -13,6 +13,7 @@ class SecureStorageHelper {
   }
 
   Future<String> get accessToken async {
+    await fetchData();
     return map['accessToken'];
   }
 

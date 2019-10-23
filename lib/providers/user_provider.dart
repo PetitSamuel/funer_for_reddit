@@ -14,7 +14,9 @@ class UserProvider with ChangeNotifier {
   UserInformation user;
   bool _isLoading = false;
 
-  UserProvider() {}
+  UserProvider() {
+    loadUserInformation();
+  }
 
   final SecureStorageHelper storage = new SecureStorageHelper();
 
@@ -27,9 +29,17 @@ class UserProvider with ChangeNotifier {
     return user.subredditsList;
   }
 
+  bool get isMissingData {
+    return user.icon_img == null ||
+        user.icon_img.isEmpty ||
+        user.display_name_prefixed == null ||
+        user.display_name_prefixed.isEmpty;
+  }
+
   Future<void> handleGetMe() async {
     String url = urlBuilder("/me", isApiV1: true);
     String accessToken = await storage.accessToken;
+    if (accessToken == null || accessToken.isEmpty) return;
     final response = await buildRequestAndGet(url, accessToken: accessToken);
 
     if (response.statusCode != 200) {
@@ -42,6 +52,7 @@ class UserProvider with ChangeNotifier {
   Future<void> handleGetUserSubreddits() async {
     String url = urlBuilder("subreddits/mine/subscriber/?limit=100");
     String accessToken = await storage.accessToken;
+    if (accessToken == null || accessToken.isEmpty) return;
     final response = await buildRequestAndGet(url, accessToken: accessToken);
 
     if (response.statusCode != 200) {

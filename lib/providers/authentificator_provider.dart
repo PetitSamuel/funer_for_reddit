@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 
 import 'package:funer_for_reddit/authentification/auth_webview.dart';
 import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
+import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/secret/secret.dart';
 import 'package:funer_for_reddit/authentification/local_server.dart';
 import 'package:funer_for_reddit/shared/requests.dart';
+import 'package:provider/provider.dart';
 
 class AuthentificatorProvider with ChangeNotifier {
   bool _signedIn = false;
@@ -88,6 +90,7 @@ class AuthentificatorProvider with ChangeNotifier {
 
     print("Signed in status: " + _signedIn.toString());
     stopLoading();
+    Provider.of<UserProvider>(context).loadUserInformation();
     return _signedIn;
   }
 
