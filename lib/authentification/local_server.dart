@@ -8,7 +8,6 @@ class LocalServer {
     HttpServer server =
         await HttpServer.bind(InternetAddress.loopbackIPv4, 8080, shared: true);
     server.listen((HttpRequest request) async {
-      print("Server started");
       final String code = request.uri.queryParameters["code"];
       onCode.add(code);
 

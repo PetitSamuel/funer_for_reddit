@@ -1,20 +1,19 @@
 import './Subreddit.dart';
-import 'package:meta/meta.dart';
 
-class AppUserInformation {
-  final String icon_color;
-  final String icon_img;
-  final String display_name_prefixed;
-  final String comment_karma;
-  final String link_karma;
-  final List<Subreddit> subredditsList;
+class UserInformation {
+  String icon_color;
+  String icon_img;
+  String display_name_prefixed;
+  String comment_karma;
+  String link_karma;
+  List<Subreddit> subredditsList;
 
-  AppUserInformation({
-    @required this.icon_color,
-    @required this.icon_img,
-    @required this.display_name_prefixed,
-    @required this.comment_karma,
-    @required this.link_karma,
-    @required this.subredditsList,
+  UserInformation({
+    this.icon_color,
+    this.icon_img,
+    this.display_name_prefixed,
+    this.comment_karma,
+    this.link_karma,
+    this.subredditsList,
   });
 }

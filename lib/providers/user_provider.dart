@@ -1,66 +1,95 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
+import 'package:funer_for_reddit/models/Subreddit.dart';
+import 'package:funer_for_reddit/models/User.dart';
+import 'package:funer_for_reddit/parsers/user_information_parser.dart';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:funer_for_reddit/authentification/auth_webview.dart';
 import 'package:funer_for_reddit/shared/requests.dart';
 
 class UserProvider with ChangeNotifier {
-  final String cool = "";
-  UserProvider() {
-    print("yo");
-  }
-  Future<void> loadUserInformation() async {
-    String url = urlBuilder("me");
-    final response = await buildRequestAndGet(url);
+  UserInformation user;
+  bool _isLoading = false;
 
-    print("yoyoyoyo");
-    /*
-    Map<String, dynamic> map = json.decode(response.body);
-    List<dynamic> subsList;
-    final subredditResponse = await http.get(
-      "https://oauth.reddit.com/subreddits/mine/subscriber",
-      headers: {
-        'Authorization': 'bearer ' + _authToken,
-        'User-Agent': 'fritter_for_reddit by /u/SexusMexus'
-      },
-    );
-    Map<String, dynamic> subRedditMap = json.decode(subredditResponse.body);
-    List<dynamic> myList = subRedditMap['data']['children'];
-//    print(myList);
-    subsList = myList.map((e) {
-      String icon_url = "";
-      if (e['data']['icon_img'] == "") {
-        if (e['data']['community_icon'] == "") {
-          icon_url =
-              e['data']['header_img'] != null ? e['data']['header_img'] : "";
-        } else {
-          icon_url = e['data']['community_icon'];
-        }
-      } else {
-        icon_url = e['data']['icon_img'];
-      }
-      return (new Subreddit(
-          display_name: e['data']['display_name'],
-          header_img: e['data']['header_img'],
-          display_name_prefixed: e['data']['display_name_prefixed'],
-          subscribers: e['data']['subscribers'].toString(),
-          community_icon: icon_url,
-          user_is_subscriber: e['data']['user_is_subscriber'].toString(),
-          url: e['data']['url']));
-    }).toList();
-    for (Subreddit x in subsList) print(x.community_icon);
-    userInformation = new AppUserInformation(
-      icon_color: map['subreddit']['icon_color'],
-      icon_img: map['subreddit']['icon_img'],
-      display_name_prefixed: map['subreddit']['display_name_prefixed'],
-      comment_karma: map['comment_karma'].toString(),
-      link_karma: map['link_karma'].toString(),
-      subredditsList: subsList,
-    );
+  UserProvider() {}
+
+  final SecureStorageHelper storage = new SecureStorageHelper();
+
+  bool get signedIn => storage.signInStatus;
+  bool get isLoading => _isLoading;
+  List<Subreddit> get subscribedSubReddits {
+    if (user == null || user.subredditsList == null) {
+      return [];
+    }
+    return user.subredditsList;
   }
-  */
+
+  Future<void> handleGetMe() async {
+    String url = urlBuilder("/me", isApiV1: true);
+    String accessToken = await storage.accessToken;
+    final response = await buildRequestAndGet(url, accessToken: accessToken);
+
+    if (response.statusCode != 200) {
+      // an error occured, show error message  & return
+      return;
+    }
+    user = parseFromMeResponse(json.decode(response.body));
+  }
+
+  Future<void> handleGetUserSubreddits() async {
+    String url = urlBuilder("subreddits/mine/subscriber/?limit=100");
+    String accessToken = await storage.accessToken;
+    final response = await buildRequestAndGet(url, accessToken: accessToken);
+
+    if (response.statusCode != 200) {
+      // an error occured, show error message  & return
+      return;
+    }
+    Map<String, dynamic> subRedditMap = json.decode(response.body);
+    List subsList = subRedditMap['data']['children'].map((e) {
+      e = e['data'];
+      String iconUrl = e['icon_img'] ?? "";
+      if (iconUrl.isEmpty) {
+        iconUrl = e['community_icon'] ?? "";
+      }
+      if (iconUrl.isEmpty) {
+        iconUrl = e['header_img'] ?? "";
+      }
+
+      return (new Subreddit(
+          display_name: e['display_name'],
+          header_img: e['header_img'],
+          display_name_prefixed: e['display_name_prefixed'],
+          subscribers: e['subscribers'].toString(),
+          community_icon: iconUrl,
+          user_is_subscriber: e['user_is_subscriber'].toString(),
+          url: e['url']));
+    }).toList();
+
+    if (user == null) user = new UserInformation();
+    user.subredditsList = new List();
+    for (Subreddit x in subsList) {
+      user.subredditsList.add(x);
+    }
+  }
+
+  Future<void> loadUserInformation() async {
+    loading();
+    await handleGetMe();
+    await handleGetUserSubreddits();
+    stopLoading();
+  }
+
+  loading() {
+    _isLoading = true;
+    notifyListeners();
+  }
+
+  stopLoading() {
+    _isLoading = false;
+    notifyListeners();
   }
 }
