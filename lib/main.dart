@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/shared/http_client_overrides.dart';
 import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/providers/authentificator_provider.dart';
 
-void main() =>
+void main() {
+  HttpOverrides.global = new HttpClientOverrides();
   runApp(ChangeNotifierProvider(
     builder: (_) => AuthentificatorProvider(),
     child: MyApp(),
   ));
+}
 
 class MyApp extends StatelessWidget {
   final String title = "Funer for Reddit";
@@ -44,29 +49,30 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Provider.of<AuthentificatorProvider>(context).isLoading ? 
-          CircularProgressIndicator() : 
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  child: Provider.of<AuthentificatorProvider>(context).signedIn
-                      ? Text('Signed in')
-                      : Text('Sign in on the left'),
-                ),
-                RaisedButton(
-                  child: Text('Refresh access token'),
-                  onPressed:
-                      Provider.of<AuthentificatorProvider>(context).signedIn
-                          ? () {
-                              Provider.of<AuthentificatorProvider>(context)
-                                  .performTokenRefresh();
-                            }
-                          : null,
-                ),
-              ],
-            ),
+        child: Provider.of<AuthentificatorProvider>(context).isLoading
+            ? CircularProgressIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Center(
+                    child:
+                        Provider.of<AuthentificatorProvider>(context).signedIn
+                            ? Text('Signed in')
+                            : Text('Sign in on the left'),
+                  ),
+                  RaisedButton(
+                    child: Text('Refresh access token'),
+                    onPressed:
+                        Provider.of<AuthentificatorProvider>(context).signedIn
+                            ? () {
+                                Provider.of<AuthentificatorProvider>(context)
+                                    .performTokenRefresh();
+                              }
+                            : null,
+                  ),
+                ],
+              ),
       ),
       drawer: Drawer(
         child: ListView(
@@ -76,14 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     title: Text('Sign out of reddit'),
                     leading: Icon(Icons.zoom_out_map),
                     onTap: () {
-                      Provider.of<AuthentificatorProvider>(context).signOutUser();
+                      Provider.of<AuthentificatorProvider>(context)
+                          .signOutUser();
                     },
                   )
                 : ListTile(
                     title: Text('Sign into reddit'),
                     leading: Icon(Icons.airline_seat_flat),
                     onTap: () {
-                      Provider.of<AuthentificatorProvider>(context).authenticateUser(context);
+                      Provider.of<AuthentificatorProvider>(context)
+                          .authenticateUser(context);
                     },
                   ),
           ],

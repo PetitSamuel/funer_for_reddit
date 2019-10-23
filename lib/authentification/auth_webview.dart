@@ -6,7 +6,7 @@ class AuthWebview extends StatelessWidget {
   final String url;
 
   AuthWebview({@required this.url});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,9 +14,11 @@ class AuthWebview extends StatelessWidget {
         title: Text('Logging into reddit.'),
       ),
       body: SafeArea(
-        child: WebView(initialUrl: url, javascriptMode: JavascriptMode.unrestricted,),
+        child: WebView(
+          initialUrl: url,
+          javascriptMode: JavascriptMode.unrestricted,
+        ),
       ),
     );
   }
-
 }

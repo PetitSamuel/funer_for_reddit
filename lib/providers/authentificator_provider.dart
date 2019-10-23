@@ -155,7 +155,6 @@ class AuthentificatorProvider with ChangeNotifier {
     String url = urlBuilder("me");
     final response = await buildRequestAndGet(url);
 
-
     print("yoyoyoyo");
     /*
     Map<String, dynamic> map = json.decode(response.body);
@@ -202,5 +201,5 @@ class AuthentificatorProvider with ChangeNotifier {
     );
   }
   */
-}
+  }
 }

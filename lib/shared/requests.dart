@@ -22,8 +22,9 @@ Future<http.Response> buildRequestAndPost(String url,
     {bool useDefaultHeaders = true,
     Map<String, String> headers,
     dynamic body}) async {
-      return await httpPost(url, useDefaultHeaders ? defaultHeaders : headers, body);
-  }
+  return await httpPost(
+      url, useDefaultHeaders ? defaultHeaders : headers, body);
+}
 
 Future<http.Response> httpPost(
     String url, Map<String, String> headers, dynamic body) async {
@@ -34,10 +35,9 @@ Future<http.Response> buildRequestAndGet(String url,
     {bool useDefaultHeaders = true,
     Map<String, String> headers,
     dynamic body}) async {
-      return await httpGet(url, useDefaultHeaders ? defaultHeaders : headers);
-  }
+  return await httpGet(url, useDefaultHeaders ? defaultHeaders : headers);
+}
 
-Future<http.Response> httpGet(
-    String url, Map<String, String> headers) async {
+Future<http.Response> httpGet(String url, Map<String, String> headers) async {
   return await http.get(url, headers: headers);
 }

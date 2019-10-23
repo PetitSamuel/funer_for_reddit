@@ -5,7 +5,8 @@ class LocalServer {
   // listen to local host requests & return a stream containing the access code.
   Future<Stream<String>> server() async {
     final StreamController<String> onCode = new StreamController();
-    HttpServer server = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080, shared: true);
+    HttpServer server =
+        await HttpServer.bind(InternetAddress.loopbackIPv4, 8080, shared: true);
     server.listen((HttpRequest request) async {
       print("Server started");
       final String code = request.uri.queryParameters["code"];
