@@ -30,10 +30,11 @@ class UserProvider with ChangeNotifier {
   }
 
   bool get isMissingData {
-    return user.icon_img == null ||
-        user.icon_img.isEmpty ||
-        user.display_name_prefixed == null ||
-        user.display_name_prefixed.isEmpty;
+    return user == null ||
+        user.iconImg == null ||
+        user.iconImg.isEmpty ||
+        user.displayNamePrefixed == null ||
+        user.displayNamePrefixed.isEmpty;
   }
 
   Future<void> handleGetMe() async {
@@ -61,23 +62,7 @@ class UserProvider with ChangeNotifier {
     }
     Map<String, dynamic> subRedditMap = json.decode(response.body);
     List subsList = subRedditMap['data']['children'].map((e) {
-      e = e['data'];
-      String iconUrl = e['icon_img'] ?? "";
-      if (iconUrl.isEmpty) {
-        iconUrl = e['community_icon'] ?? "";
-      }
-      if (iconUrl.isEmpty) {
-        iconUrl = e['header_img'] ?? "";
-      }
-
-      return (new Subreddit(
-          display_name: e['display_name'],
-          header_img: e['header_img'],
-          display_name_prefixed: e['display_name_prefixed'],
-          subscribers: e['subscribers'].toString(),
-          community_icon: iconUrl,
-          user_is_subscriber: e['user_is_subscriber'].toString(),
-          url: e['url']));
+      return subredditFromSubscriptions(e['data']);
     }).toList();
 
     if (user == null) user = new UserInformation();

@@ -16,14 +16,17 @@ class SecureStorageHelper {
   }
 
   Future<String> get accessToken async {
-    await fetchData();
+    print("checking");
+    if (await needsTokenRefresh()) {
+      print("refreshing");
+      await performTokenRefresh();
+    }
     return map['accessToken'];
   }
 
   String get debugPrint => map.toString();
 
   Future<String> get refreshToken async {
-    await fetchData();
     return map['refreshToken'];
   }
 
@@ -46,16 +49,16 @@ class SecureStorageHelper {
     dynamic body = "grant_type=refresh_token&refresh_token=$_refreshToken";
     final response =
         await buildRequestAndPost(url, body: body, useAuthHeaders: true);
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-      String _accessToken = map['access_token'];
-      print(_accessToken);
-      await this.updateAccessToken(_accessToken);
-    } else {
+    if (response.statusCode != 200) {
       // Show error : failed to load token
       // todo: handle error here
       print("failed when refreshing token");
-    } 
+    }
+    Map<String, dynamic> map = json.decode(response.body);
+    String _accessToken = map['access_token'];
+    print(_accessToken);
+    await this.updateAccessToken(_accessToken);
+    await fetchData();
   }
 
   Future<bool> needsTokenRefresh() async {

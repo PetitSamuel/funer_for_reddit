@@ -41,14 +41,14 @@ class AuthentificatorProvider with ChangeNotifier {
 
   Future<bool> authenticateUser(BuildContext context) async {
     loading();
-    // start a new instance of the server that listens to localhost requests
+    // listen to localhost requests
     final LocalServer localServer = LocalServer();
     Stream<String> codeStream = await localServer.server();
 
     final String webviewUrl = authUrlBuilder(
         "authorize.compact?client_id=$CLIENT_ID&response_type=code&state=GENERATESOMETHINGHERE&redirect_uri=$REDIRECT_URL&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread");
 
-    // launch webview!
+    // launch webview
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,25 +70,26 @@ class AuthentificatorProvider with ChangeNotifier {
 
     // user has accepted or declined. Close webview
     Navigator.pop(context);
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-      _accessToken = map['access_token'];
-      _refreshToken = map["refresh_token"];
-      if ((_accessToken ?? "").isEmpty || (_refreshToken ?? "").isEmpty) {
-        print("not logged in!");
-        _signedIn = false;
-        stopLoading();
-        return false;
-      }
-      _signedIn = true;
-      await storage.updateCredentials(_accessToken, _refreshToken, _signedIn);
-    } else {
+    if (response.statusCode != 200) {
       // todo: show error message
       _signedIn = false;
+      stopLoading();
+      return false;
     }
 
-    print("Signed in status: " + _signedIn.toString());
+    Map<String, dynamic> map = json.decode(response.body);
+    _accessToken = map['access_token'];
+    _refreshToken = map["refresh_token"];
+
+    if ((_accessToken ?? "").isEmpty || (_refreshToken ?? "").isEmpty) {
+      // todo: show error message
+      _signedIn = false;
+      stopLoading();
+      return false;
+    }
+
+    _signedIn = true;
+    await storage.updateCredentials(_accessToken, _refreshToken, _signedIn);
     stopLoading();
     Provider.of<UserProvider>(context).loadUserInformation();
     return _signedIn;

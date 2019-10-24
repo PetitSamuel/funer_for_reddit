@@ -1,12 +1,30 @@
+import 'package:funer_for_reddit/models/Subreddit.dart';
 import 'package:funer_for_reddit/models/User.dart';
 
 UserInformation parseFromMeResponse(Map<String, dynamic> response) {
   return new UserInformation(
-      icon_color: response['subreddit']['icon_color'] ?? "",
-      icon_img: response['subreddit']['icon_img'] ?? "",
-      display_name_prefixed:
-          response['subreddit']['display_name_prefixed'] ?? "",
-      comment_karma: (response['comment_karma']).toString() ?? "",
-      link_karma: response['link_karma'].toString() ?? "",
+      iconColor: response['subreddit']['icon_color'] ?? "",
+      iconImg: response['subreddit']['icon_img'] ?? "",
+      displayNamePrefixed: response['subreddit']['display_name_prefixed'] ?? "",
+      commentKarma: (response['comment_karma']).toString() ?? "",
+      linkKarma: response['link_karma'].toString() ?? "",
       subredditsList: new List());
+}
+
+Subreddit subredditFromSubscriptions(Map<String, dynamic> response) {
+  String iconUrl = response['icon_img'] ?? "";
+  if (iconUrl.isEmpty) {
+    iconUrl = response['community_icon'] ?? "";
+  }
+  if (iconUrl.isEmpty) {
+    iconUrl = response['header_img'] ?? "";
+  }
+  return new Subreddit(
+      displayName: response['display_name'],
+      headerImg: response['header_img'],
+      displayNamePrefixed: response['display_name_prefixed'],
+      subscribers: response['subscribers'].toString(),
+      communityIcon: iconUrl,
+      userIsSubscriber: response['user_is_subscriber'].toString(),
+      url: response['url']);
 }
