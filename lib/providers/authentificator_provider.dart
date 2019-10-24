@@ -96,21 +96,7 @@ class AuthentificatorProvider with ChangeNotifier {
 
   Future<void> performTokenRefresh() async {
     loading();
-    _refreshToken = await storage.refreshToken;
-    String url = authUrlBuilder("access_token");
-    dynamic body = "grant_type=refresh_token&refresh_token=$_refreshToken";
-    final response =
-        await buildRequestAndPost(url, body: body, useAuthHeaders: true);
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-      _accessToken = map['access_token'];
-      print(_accessToken);
-      await storage.updateAccessToken(_accessToken);
-    } else {
-      // Show error : failed to load token
-      // todo: handle error here
-      print("failed when refreshing token");
-    }
+    await storage.performTokenRefresh();
     stopLoading();
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/models/Subreddit.dart';
+import 'package:funer_for_reddit/widgets/subredditsList.dart';
 import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/providers/authentificator_provider.dart';
@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   String code;
   String authToken;
   String refreshToken;
-
+  bool _showUserProfiles = false;
   @override
   void initState() {
     super.initState();
@@ -74,12 +74,31 @@ class _HomePageState extends State<HomePage> {
                   child: user(),
                   margin: EdgeInsets.all(0.0),
                   padding: EdgeInsets.all(0.0)),
-//              height: 300,
+                  height: 65,
             ),
-            subreddits(),
+            _showUserProfiles ? userProfiles() : subreddits(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget userProfiles() {
+    bool signedIn = Provider.of<AuthentificatorProvider>(context).signedIn;
+    return 
+        ListTile(
+      title: Text(signedIn ? "Sign out" : "Sign in"),
+      onTap: () {
+        if (signedIn) {
+          Provider.of<AuthentificatorProvider>(context).signOutUser();
+        } else {
+          Provider.of<AuthentificatorProvider>(context).authenticateUser(context);
+          setState(() {
+            _showUserProfiles = false;
+          });
+        }
+      },
+      trailing: Icon(Icons.power_settings_new),
     );
   }
 
@@ -87,7 +106,7 @@ class _HomePageState extends State<HomePage> {
     return Consumer<UserProvider>(
       builder: (BuildContext context, UserProvider model, _) {
         if (model.isLoading) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
         if (!model.signedIn) {
           return SafeArea(
@@ -104,16 +123,12 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         }
-        if (model.user == null) {
-          print("load");
-          return CircularProgressIndicator();
-        }
-        print("2");
 
         return ListView(
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             ExpansionTile(
+              onExpansionChanged: (bool expanding) => setState(() => this._showUserProfiles = expanding),
               leading: CircleAvatar(child: Image.network(model.user.icon_img)),
               title: Text(model.user.display_name_prefixed),
               children: <Widget>[
@@ -126,60 +141,5 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-  }
-
-  Widget subreddits() {
-    return Consumer<UserProvider>(
-      builder: (BuildContext context, UserProvider model, _) {
-        if (model.signedIn) {
-          if (model.subscribedSubReddits.length == 0)
-            return SafeArea(
-                child: Container(color: Colors.white // This is optional
-                    ));
-          if (model.isLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            return Container(
-              child: ListView.builder(
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, int index) {
-                  Subreddit current = model.subscribedSubReddits[index];
-                  String iconUrl =
-                      model.subscribedSubReddits[index].community_icon;
-                  return ListTile(
-                    title: Text(current.display_name),
-                    leading: iconUrl.isEmpty
-                        ? Icon(Icons.error_outline)
-                        : CircleAvatar(
-                            backgroundImage: NetworkImage(iconUrl),
-                          ),
-                    onTap: () {
-                      print(current.url);
-                    },
-                  );
-                },
-                itemCount: model.subscribedSubReddits.length,
-              ),
-              height: double.maxFinite,
-            );
-          }
-        } else {
-          return SafeArea(
-            child: ListTile(
-              title: Text('Sign into reddit'),
-              leading: CircleAvatar(
-                backgroundColor: Theme.of(context).accentColor,
-                child: Icon(Icons.person_outline),
-              ),
-              onTap: () {
-                Provider.of<AuthentificatorProvider>(context)
-                    .authenticateUser(context);
-              },
-            ),
-          );
-        }
-      },
-    );
-  }
+  }  
 }

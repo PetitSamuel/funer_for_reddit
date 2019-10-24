@@ -94,6 +94,10 @@ class UserProvider with ChangeNotifier {
     stopLoading();
   }
 
+  clearData() {
+    this.user = null;
+  }
+
   loading() {
     _isLoading = true;
     notifyListeners();
