@@ -26,7 +26,6 @@ class FeedProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<Map<String, dynamic>> loadSignedInPosts() async {
-    print("auth");
     String token = await storage.accessToken;
     String url = urlBuilder("${this.subreddit}" + "${this.sort}/?limit=10");
     var response = await buildRequestAndGet(url, accessToken: token);
@@ -38,7 +37,6 @@ class FeedProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadUnauthentificatedPosts() async {
-    print("unauth");
     String url = urlBuilder("${this.subreddit}" + "${this.sort}/.json");
     var response = await buildRequestAndGet(url, headers: {
       'User-Agent': USER_AGENT,
@@ -52,6 +50,7 @@ class FeedProvider with ChangeNotifier {
 
   Future<void> fetchPostsListing(
       {String subreddit = "", String sort = "Hot"}) async {
+    this._isLoading;
     this.posts.clear();
     this.subreddit = subreddit.toLowerCase();
     this.sort = sort.toLowerCase();
@@ -62,13 +61,12 @@ class FeedProvider with ChangeNotifier {
     Map<String, dynamic> response = this.signedIn
         ? await loadSignedInPosts()
         : await loadUnauthentificatedPosts();
-    print(response);
     var p = response['data']['children'].map((e) {
       return singlePostInstanceFromJson(e['data']);
     }).toList();
 
-    print("posts");
-    print(p);
+    p.forEach((x) => this.posts.add(x));
+    this.stopLoading();
   }
 
   loading() {

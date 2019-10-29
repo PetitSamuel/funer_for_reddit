@@ -1,5 +1,5 @@
-import 'package:funer_for_reddit/models/Subreddit.dart';
-import 'package:funer_for_reddit/models/User.dart';
+import 'package:funer_for_reddit/models/subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_information_model.dart';
 
 UserInformation parseFromMeResponse(Map<String, dynamic> response) {
   return new UserInformation(

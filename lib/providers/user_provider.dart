@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
-import 'package:funer_for_reddit/models/Subreddit.dart';
-import 'package:funer_for_reddit/models/User.dart';
+import 'package:funer_for_reddit/models/subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_information_model.dart';
 import 'package:funer_for_reddit/parsers/user_information_parser.dart';
 
 import 'package:funer_for_reddit/shared/requests.dart';

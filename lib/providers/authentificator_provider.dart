@@ -30,8 +30,6 @@ class AuthentificatorProvider with ChangeNotifier {
   Future<bool> validateAuth() async {
     loading();
     await storage.init();
-    print(storage.map);
-    print(storage.signInStatus);
     if (storage.signInStatus) {
       performTokenRefresh();
     }

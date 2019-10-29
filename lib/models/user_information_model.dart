@@ -1,4 +1,4 @@
-import './Subreddit.dart';
+import 'package:funer_for_reddit/models/subreddit_model.dart';
 
 class UserInformation {
   String iconColor;

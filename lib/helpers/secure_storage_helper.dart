@@ -16,10 +16,7 @@ class SecureStorageHelper {
   }
 
   Future<String> get accessToken async {
-    print("checking");
     if (await needsTokenRefresh() && signInStatus) {
-      print("refreshing");
-      print(map);
       await performTokenRefresh();
     }
     return map['accessToken'] ?? "";

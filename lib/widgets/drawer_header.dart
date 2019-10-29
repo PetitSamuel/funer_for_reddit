@@ -3,7 +3,7 @@ import 'package:funer_for_reddit/providers/authentificator_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-Widget userDrawerHeader(_changeDisplayState) {
+Widget drawerHeader(_changeDisplayState) {
   return Consumer<UserProvider>(
     builder: (BuildContext context, UserProvider model, _) {
       if (model.isLoading) {

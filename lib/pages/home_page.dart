@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/widgets/UserDrawerHeader.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
+import 'package:funer_for_reddit/widgets/drawer_header.dart';
+import 'package:funer_for_reddit/widgets/feed.dart';
 import 'package:funer_for_reddit/widgets/subreddits_list_drawer_widget.dart';
 import 'package:funer_for_reddit/widgets/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
@@ -36,12 +38,10 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Center(
-                    child:
-                        Provider.of<AuthentificatorProvider>(context).signedIn
-                            ? Text('Signed in')
-                            : Text('Sign in on the left'),
-                  ),
+                  Provider.of<AuthentificatorProvider>(context).signedIn
+                      ? subredditFeedListView(
+                          Provider.of<FeedProvider>(context).posts)
+                      : Center(child: Text("sign in!")),
                 ],
               ),
       ),
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             Container(
               child: DrawerHeader(
-                  child: userDrawerHeader(updateShowUserProfile),
+                  child: drawerHeader(updateShowUserProfile),
                   margin: EdgeInsets.all(0.0),
                   padding: EdgeInsets.all(0.0)),
               height: 65,
