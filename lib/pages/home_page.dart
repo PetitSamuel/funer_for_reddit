@@ -20,10 +20,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _showUserProfiles = false;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print("reload");
+        Provider.of<FeedProvider>(context).fetchPostsListing();
+      }
+    });
   }
 
   @override
@@ -54,15 +62,17 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Center(
-        child: Provider.of<AuthentificatorProvider>(context).isLoading ||
-                Provider.of<FeedProvider>(context).isLoading
+        child: Provider.of<AuthentificatorProvider>(context).isLoading
             ? CircularProgressIndicator()
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   subredditFeedListView(
-                      Provider.of<FeedProvider>(context).posts),
+                      Provider.of<FeedProvider>(context).posts,
+                      _scrollController),
+                  if (Provider.of<FeedProvider>(context).isLoading)
+                    Center(child: CircularProgressIndicator()),
                 ],
               ),
       ),
@@ -83,6 +93,10 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  reloadFeed() {
+    print("hey");
   }
 
   updateShowUserProfile(bool value) {

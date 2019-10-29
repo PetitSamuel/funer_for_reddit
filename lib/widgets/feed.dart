@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_model.dart';
 
-Widget subredditFeedListView(List<SinglePostModel> posts) {
+Widget subredditFeedListView(
+    List<SinglePostModel> posts, ScrollController _scrollCtrl) {
   if (posts == null || posts.length == 0) {
     return SafeArea(
       child: Container(
@@ -14,6 +15,8 @@ Widget subredditFeedListView(List<SinglePostModel> posts) {
   return Container(
       child: Expanded(
           child: ListView.builder(
+    padding: EdgeInsets.only(bottom: 48),
+    controller: _scrollCtrl,
     scrollDirection: Axis.vertical,
     shrinkWrap: true,
     itemCount: posts.length,

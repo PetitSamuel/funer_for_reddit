@@ -14,6 +14,8 @@ class FeedProvider with ChangeNotifier {
   bool _isLoading = false;
   String subreddit = "";
   String sort = "hot";
+  String after = "";
+  bool clearOnReload = false;
   List<SinglePostModel> posts;
 
   FeedProvider() {
@@ -28,11 +30,19 @@ class FeedProvider with ChangeNotifier {
 
   setSort(String s) {
     this.sort = s;
+    this.clearOnReload = true;
+  }
+
+  updateWithClearOnReload() {
+    this.clearOnReload = true;
+    this.fetchPostsListing();
   }
 
   Future<Map<String, dynamic>> loadSignedInPosts() async {
     String token = await storage.accessToken;
-    String url = urlBuilder("${this.subreddit}" + "${this.sort}/");
+    String url = urlBuilder(
+        "${this.subreddit}" + "${this.sort}/?limit=15&after=${this.after}");
+    print(url);
     var response = await buildRequestAndGet(url, accessToken: token);
     if (response.statusCode != 200) {
       // error occured, return null
@@ -42,7 +52,8 @@ class FeedProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadUnauthentificatedPosts() async {
-    String url = urlBuilder("${this.subreddit}" + "${this.sort}/.json");
+    String url = urlBuilder("${this.subreddit}" +
+        "${this.sort}/?limit=15&after=${this.after}.json");
     var response = await buildRequestAndGet(url, headers: {
       'User-Agent': USER_AGENT,
     });
@@ -55,13 +66,17 @@ class FeedProvider with ChangeNotifier {
 
   Future<void> fetchPostsListing({String sub = ""}) async {
     loading();
-    this.posts.clear();
     if (sub.isNotEmpty) {
       this.subreddit = sub.toLowerCase();
+      this.clearOnReload = true;
     }
-
     this.sort = sort.toLowerCase();
 
+    if (this.clearOnReload) {
+      this.clearOnReload = false;
+      this.posts.clear();
+      this.after = "";
+    }
     // make sure to update storage data
     await this.storage.init();
 
@@ -75,8 +90,9 @@ class FeedProvider with ChangeNotifier {
     var p = response['data']['children'].map((e) {
       return singlePostInstanceFromJson(e['data']);
     }).toList();
-
     p.forEach((x) => this.posts.add(x));
+    this.after = response['data']['after'] ?? "";
+    print(this.after);
     this.stopLoading();
   }
 
