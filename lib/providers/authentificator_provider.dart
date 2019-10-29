@@ -30,13 +30,14 @@ class AuthentificatorProvider with ChangeNotifier {
   Future<bool> validateAuth() async {
     loading();
     await storage.init();
-
+    print(storage.map);
+    print(storage.signInStatus);
     if (storage.signInStatus) {
       performTokenRefresh();
     }
 
     stopLoading();
-    return signedIn;
+    return storage.signInStatus;
   }
 
   Future<bool> authenticateUser(BuildContext context) async {
@@ -102,6 +103,7 @@ class AuthentificatorProvider with ChangeNotifier {
   }
 
   Future<void> signOutUser() async {
+    print("signing out!!");
     loading();
     // delete: authToken, refreshToken, signedIn, lastTokenRefresh
     await storage.clearStorage();

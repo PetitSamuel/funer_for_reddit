@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:funer_for_reddit/models/Subreddit.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:provider/provider.dart';
 
 /*
@@ -37,6 +38,8 @@ Widget drawerSubredditsListView() {
                       ),
                 onTap: () {
                   print(current.url);
+                  Provider.of<FeedProvider>(context)
+                      .fetchPostsListing(subreddit: current.url);
                 },
               );
             },

@@ -53,7 +53,7 @@ Future<http.Response> httpPost(
 Future<http.Response> buildRequestAndGet(String url,
     {String accessToken = "", Map<String, String> headers}) async {
   return await httpGet(
-      url, accessToken.isEmpty ? headers : buildHeadersFromToken(accessToken));
+      url, accessToken == "" ? headers : buildHeadersFromToken(accessToken));
 }
 
 Future<http.Response> httpGet(String url, Map<String, String> headers) async {

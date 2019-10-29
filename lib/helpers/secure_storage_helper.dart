@@ -17,11 +17,12 @@ class SecureStorageHelper {
 
   Future<String> get accessToken async {
     print("checking");
-    if (await needsTokenRefresh()) {
+    if (await needsTokenRefresh() && signInStatus) {
       print("refreshing");
+      print(map);
       await performTokenRefresh();
     }
-    return map['accessToken'];
+    return map['accessToken'] ?? "";
   }
 
   String get debugPrint => map.toString();
@@ -62,7 +63,7 @@ class SecureStorageHelper {
   }
 
   Future<bool> needsTokenRefresh() async {
-    String lastRefresh = await lastTokenRefresh;
+    String lastRefresh = await lastTokenRefresh ?? "";
     if (lastRefresh.isEmpty) {
       return true;
     }

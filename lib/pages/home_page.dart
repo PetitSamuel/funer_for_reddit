@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/widgets/UserDrawerHeader.dart';
-import 'package:funer_for_reddit/widgets/subredditsList.dart';
+import 'package:funer_for_reddit/widgets/subreddits_list_drawer_widget.dart';
 import 'package:funer_for_reddit/widgets/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/providers/authentificator_provider.dart';
-import 'package:funer_for_reddit/providers/user_provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -42,26 +41,6 @@ class _HomePageState extends State<HomePage> {
                         Provider.of<AuthentificatorProvider>(context).signedIn
                             ? Text('Signed in')
                             : Text('Sign in on the left'),
-                  ),
-                  RaisedButton(
-                    child: Text('Refresh access token'),
-                    onPressed:
-                        Provider.of<AuthentificatorProvider>(context).signedIn
-                            ? () {
-                                Provider.of<AuthentificatorProvider>(context)
-                                    .performTokenRefresh();
-                              }
-                            : null,
-                  ),
-                  RaisedButton(
-                    child: Text('Call /me'),
-                    onPressed:
-                        Provider.of<AuthentificatorProvider>(context).signedIn
-                            ? () {
-                                Provider.of<UserProvider>(context)
-                                    .loadUserInformation();
-                              }
-                            : null,
                   ),
                 ],
               ),
