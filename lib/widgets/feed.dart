@@ -19,15 +19,32 @@ Widget subredditFeedListView(List<SinglePostModel> posts) {
     itemCount: posts.length,
     itemBuilder: (context, int index) {
       var post = posts[index];
-      bool isDisplayingSubstring = post.selftext.length > 200;
-      int length = isDisplayingSubstring ? 200 : post.selftext.length;
       return Card(
           child: ListTile(
         title: Text(posts[index].author + " - " + posts[index].title),
-        subtitle: post.selftext.length == 0
-            ? null
-            : Text((post.selftext.substring(0, length) ?? "") +
-                (isDisplayingSubstring ? "..." : "")),
+        subtitle: Column(
+          children: <Widget>[
+            if (post.selftext.length != 0)
+              Text(
+                post.selftext,
+                overflow: TextOverflow.fade,
+                maxLines: 3,
+              ),
+            Container(
+              margin: EdgeInsets.only(top: 5, bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    post.ups.toString(),
+                  ),
+                  Text(post.numComments.toString() + " comments"),
+                  Text(post.subreddit),
+                ],
+              ),
+            ),
+          ],
+        ),
       ));
     },
   )));

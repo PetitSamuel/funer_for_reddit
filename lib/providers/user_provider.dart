@@ -70,6 +70,8 @@ class UserProvider with ChangeNotifier {
     for (Subreddit x in subsList) {
       user.subredditsList.add(x);
     }
+    user.subredditsList.sort((a, b) =>
+        a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
   }
 
   Future<void> loadUserInformation() async {

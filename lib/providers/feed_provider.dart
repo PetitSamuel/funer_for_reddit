@@ -12,12 +12,13 @@ import 'package:funer_for_reddit/shared/requests.dart';
 
 class FeedProvider with ChangeNotifier {
   bool _isLoading = false;
-  String subreddit;
-  String sort;
+  String subreddit = "";
+  String sort = "hot";
   List<SinglePostModel> posts;
 
   FeedProvider() {
     posts = new List();
+    fetchPostsListing();
   }
 
   final SecureStorageHelper storage = new SecureStorageHelper();
@@ -25,9 +26,13 @@ class FeedProvider with ChangeNotifier {
   bool get signedIn => storage.signInStatus;
   bool get isLoading => _isLoading;
 
+  setSort(String s) {
+    this.sort = s;
+  }
+
   Future<Map<String, dynamic>> loadSignedInPosts() async {
     String token = await storage.accessToken;
-    String url = urlBuilder("${this.subreddit}" + "${this.sort}/?limit=10");
+    String url = urlBuilder("${this.subreddit}" + "${this.sort}/");
     var response = await buildRequestAndGet(url, accessToken: token);
     if (response.statusCode != 200) {
       // error occured, return null
@@ -48,11 +53,13 @@ class FeedProvider with ChangeNotifier {
     return json.decode(response.body);
   }
 
-  Future<void> fetchPostsListing(
-      {String subreddit = "", String sort = "Hot"}) async {
-    this._isLoading;
+  Future<void> fetchPostsListing({String sub = ""}) async {
+    loading();
     this.posts.clear();
-    this.subreddit = subreddit.toLowerCase();
+    if (sub.isNotEmpty) {
+      this.subreddit = sub.toLowerCase();
+    }
+
     this.sort = sort.toLowerCase();
 
     // make sure to update storage data
@@ -61,6 +68,10 @@ class FeedProvider with ChangeNotifier {
     Map<String, dynamic> response = this.signedIn
         ? await loadSignedInPosts()
         : await loadUnauthentificatedPosts();
+    if (response == null) {
+      print("error in call");
+      return;
+    }
     var p = response['data']['children'].map((e) {
       return singlePostInstanceFromJson(e['data']);
     }).toList();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/widgets/drawer_header.dart';
 import 'package:funer_for_reddit/widgets/feed.dart';
+import 'package:funer_for_reddit/widgets/sort_options_popup_menu.dart';
 import 'package:funer_for_reddit/widgets/subreddits_list_drawer_widget.dart';
 import 'package:funer_for_reddit/widgets/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
@@ -30,18 +31,38 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print("search!");
+            },
+          ),
+          PopupMenuButton(
+            child: Icon(Icons.sort),
+            itemBuilder: (BuildContext context) {
+              return sortOptionsPopupMenu(context, this.sort);
+            },
+            onSelected: (String sort) => updateSort(sort),
+          ),
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {
+              print("options!");
+            },
+          ),
+        ],
       ),
       body: Center(
-        child: Provider.of<AuthentificatorProvider>(context).isLoading
+        child: Provider.of<AuthentificatorProvider>(context).isLoading ||
+                Provider.of<FeedProvider>(context).isLoading
             ? CircularProgressIndicator()
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Provider.of<AuthentificatorProvider>(context).signedIn
-                      ? subredditFeedListView(
-                          Provider.of<FeedProvider>(context).posts)
-                      : Center(child: Text("sign in!")),
+                  subredditFeedListView(
+                      Provider.of<FeedProvider>(context).posts),
                 ],
               ),
       ),
@@ -69,4 +90,11 @@ class _HomePageState extends State<HomePage> {
       _showUserProfiles = value;
     });
   }
+
+  updateSort(String sort) {
+    Provider.of<FeedProvider>(context).setSort(sort);
+    Provider.of<FeedProvider>(context).fetchPostsListing();
+  }
+
+  String get sort => Provider.of<FeedProvider>(context).sort;
 }
