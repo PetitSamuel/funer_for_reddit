@@ -32,7 +32,7 @@ Widget drawerHeader(_changeDisplayState) {
             onExpansionChanged: (bool expanding) =>
                 _changeDisplayState(expanding),
             leading: CircleAvatar(child: Image.network(model.user.iconImg)),
-            title: Text(model.user.displayNamePrefixed),
+            title: Text(model.user.name),
             children: <Widget>[
               ListTile(
                 trailing: Icon(Icons.power_settings_new),

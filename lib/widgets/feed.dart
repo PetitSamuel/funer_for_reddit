@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_model.dart';
+import 'package:funer_for_reddit/shared/dateTimeHelperFunctions.dart';
 
 Widget subredditFeedListView(
     List<SinglePostModel> posts, ScrollController _scrollCtrl) {
@@ -43,6 +44,8 @@ Widget subredditFeedListView(
                   ),
                   Text(post.numComments.toString() + " comments"),
                   Text(post.subreddit),
+                  //HERE
+                  Text(getTimeAgoAsString(post.created)),
                 ],
               ),
             ),

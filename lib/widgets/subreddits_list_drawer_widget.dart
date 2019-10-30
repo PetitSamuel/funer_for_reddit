@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:funer_for_reddit/models/subreddit_model.dart';
+import 'package:funer_for_reddit/models/subreddit_information/subscribed_subreddit_model.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ Widget drawerSubredditsListView() {
             physics: ScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, int index) {
-              Subreddit current = model.subscribedSubReddits[index];
+              SubscribedSubredditModel current = model.subreddits[index];
               String iconUrl = model.subscribedSubReddits[index].communityIcon;
               return ListTile(
                 title: Text(current.displayName),

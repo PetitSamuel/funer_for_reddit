@@ -115,7 +115,7 @@ class UserInformationModel {
       this.goldExpiration,
       this.seenSubredditChatFtux});
 
-  UserInformationModel userInformationFromJson(Map<String, dynamic> json) {
+  static UserInformationModel fromJson(Map<String, dynamic> json) {
     if (json == null) return new UserInformationModel();
     return new UserInformationModel(
       hasStripeSubscription: json['has_stripe_subscription'],

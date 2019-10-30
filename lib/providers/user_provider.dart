@@ -4,17 +4,18 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
-import 'package:funer_for_reddit/models/subreddit_model.dart';
-import 'package:funer_for_reddit/models/user_information_model.dart';
-import 'package:funer_for_reddit/parsers/user_information_parser.dart';
+import 'package:funer_for_reddit/models/subreddit_information/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_information/user_information_model.dart';
 
 import 'package:funer_for_reddit/shared/requests.dart';
 
 class UserProvider with ChangeNotifier {
-  UserInformation user;
+  UserInformationModel user;
+  List<SubscribedSubredditModel> subreddits;
   bool _isLoading = false;
 
   UserProvider() {
+    subreddits = new List();
     loadUserInformation();
   }
 
@@ -22,19 +23,16 @@ class UserProvider with ChangeNotifier {
 
   bool get signedIn => storage.signInStatus;
   bool get isLoading => _isLoading;
-  List<Subreddit> get subscribedSubReddits {
-    if (user == null || user.subredditsList == null) {
-      return [];
-    }
-    return user.subredditsList;
+  List<SubscribedSubredditModel> get subscribedSubReddits {
+    return this.subreddits;
   }
 
   bool get isMissingData {
     return user == null ||
         user.iconImg == null ||
         user.iconImg.isEmpty ||
-        user.displayNamePrefixed == null ||
-        user.displayNamePrefixed.isEmpty;
+        user.name == null ||
+        user.name.isEmpty;
   }
 
   Future<void> handleGetMe() async {
@@ -47,7 +45,7 @@ class UserProvider with ChangeNotifier {
       // an error occured, show error message  & return
       return;
     }
-    user = parseFromMeResponse(json.decode(response.body));
+    user = UserInformationModel.fromJson(json.decode(response.body));
   }
 
   Future<void> handleGetUserSubreddits() async {
@@ -62,15 +60,14 @@ class UserProvider with ChangeNotifier {
     }
     Map<String, dynamic> subRedditMap = json.decode(response.body);
     List subsList = subRedditMap['data']['children'].map((e) {
-      return subredditFromSubscriptions(e['data']);
+      return SubscribedSubredditModel.fromJson(e['data']);
     }).toList();
 
-    if (user == null) user = new UserInformation();
-    user.subredditsList = new List();
-    for (Subreddit x in subsList) {
-      user.subredditsList.add(x);
+    for (SubscribedSubredditModel x in subsList) {
+      this.subreddits.add(x);
     }
-    user.subredditsList.sort((a, b) =>
+    print("stop!");
+    this.subreddits.sort((a, b) =>
         a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
   }
 
