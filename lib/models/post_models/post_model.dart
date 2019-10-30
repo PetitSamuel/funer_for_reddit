@@ -1,3 +1,5 @@
+import 'package:funer_for_reddit/models/post_models/link_flair_richtext_model.dart';
+
 class SinglePostModel {
   dynamic approvedAtUtc;
   String subreddit;
@@ -50,7 +52,7 @@ class SinglePostModel {
   bool stickied;
   bool quarantine;
   dynamic viewCount;
-  List<Null> linkFlairRichtext;
+  List<LinkFlairRichtext> linkFlairRichtext;
   String linkFlairBackgroundColor;
   List<Null> authorFlairRichtext;
   bool over18;
@@ -268,10 +270,8 @@ class SinglePostModel {
       stickied: json['stickied'],
       quarantine: json['quarantine'],
       viewCount: json['view_count'],
-      /*   if (json['link_flair_richtext'] != null) {
-      linkFlairRichtext: new List<Null>();
-    }
-    */
+      linkFlairRichtext:
+          LinkFlairRichtext.listFromJson(json['link_flair_richtext']),
       linkFlairBackgroundColor: json['link_flair_background_color'],
       /*  if (json['author_flair_richtext'] != null) {
       authorFlairRichtext: new List<Null>();

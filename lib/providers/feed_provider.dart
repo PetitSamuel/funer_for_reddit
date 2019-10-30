@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
-import 'package:funer_for_reddit/models/post_model.dart';
+import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/secret/secret.dart';
 
 import 'package:funer_for_reddit/shared/requests.dart';
@@ -90,7 +90,6 @@ class FeedProvider with ChangeNotifier {
     }).toList();
     p.forEach((x) => this.posts.add(x));
     this.after = response['data']['after'] ?? "";
-    print(this.after);
     this.stopLoading();
   }
 

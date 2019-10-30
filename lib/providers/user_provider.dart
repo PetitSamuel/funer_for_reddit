@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
-import 'package:funer_for_reddit/models/subreddit_information/subscribed_subreddit_model.dart';
-import 'package:funer_for_reddit/models/user_information/user_information_model.dart';
+import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
 
 import 'package:funer_for_reddit/shared/requests.dart';
 
@@ -52,7 +52,6 @@ class UserProvider with ChangeNotifier {
   Future<void> handleGetUserSubreddits() async {
     String url =
         urlBuilder("subreddits/mine/subscriber/?limit=100&after=${this.after}");
-    print(url);
     String accessToken = await storage.accessToken;
     if (accessToken == null || accessToken.isEmpty) return;
     final response = await buildRequestAndGet(url, accessToken: accessToken);
@@ -72,7 +71,6 @@ class UserProvider with ChangeNotifier {
     this.subreddits.sort((a, b) =>
         a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
     this.after = subRedditMap['data']['after'] ?? "";
-    print(after);
   }
 
   Future<void> loadUserInformation() async {
@@ -82,6 +80,7 @@ class UserProvider with ChangeNotifier {
     stopLoading();
 
     while (this.after != "") {
+      // todo: indicate loading status here in the drawer
       await handleGetUserSubreddits();
       notifyListeners();
     }

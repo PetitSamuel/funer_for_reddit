@@ -1,5 +1,5 @@
-import 'package:funer_for_reddit/models/user_information/user_information_features_model.dart';
-import 'package:funer_for_reddit/models/user_information/user_information_subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_models/user_information_features_model.dart';
+import 'package:funer_for_reddit/models/user_models/user_information_subreddit_model.dart';
 
 class UserInformationModel {
   bool hasStripeSubscription;

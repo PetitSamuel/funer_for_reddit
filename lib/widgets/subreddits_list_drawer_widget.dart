@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:funer_for_reddit/models/subreddit_information/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:provider/provider.dart';
