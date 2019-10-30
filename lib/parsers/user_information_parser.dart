@@ -23,8 +23,8 @@ Subreddit subredditFromSubscriptions(Map<String, dynamic> response) {
       displayName: response['display_name'],
       headerImg: response['header_img'],
       displayNamePrefixed: response['display_name_prefixed'],
-      subscribers: response['subscribers'].toString(),
+      subscribers: response['subscribers'],
       communityIcon: iconUrl,
-      userIsSubscriber: response['user_is_subscriber'].toString(),
+      userIsSubscriber: response['user_is_subscriber'],
       url: response['url']);
 }

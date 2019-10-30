@@ -15,6 +15,7 @@ Widget userProfiles(BuildContext context) {
             onTap: () {
               if (signedIn) {
                 Provider.of<AuthentificatorProvider>(context).signOutUser();
+                Provider.of<UserProvider>(context).clearData();
               } else {
                 Provider.of<AuthentificatorProvider>(context)
                     .authenticateUser(context);

@@ -9,7 +9,7 @@ Widget drawerHeader(_changeDisplayState) {
       if (model.isLoading) {
         return Center(child: CircularProgressIndicator());
       }
-      if (!model.signedIn) {
+      if (model.user == null || !model.signedIn) {
         return SafeArea(
           child: ListTile(
             title: Text('Sign into reddit'),
@@ -24,6 +24,7 @@ Widget drawerHeader(_changeDisplayState) {
           ),
         );
       }
+
       return ListView(
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[

@@ -95,10 +95,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  reloadFeed() {
-    print("hey");
-  }
-
   updateShowUserProfile(bool value) {
     setState(() {
       _showUserProfiles = value;

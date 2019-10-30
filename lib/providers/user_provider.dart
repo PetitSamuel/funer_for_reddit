@@ -83,6 +83,7 @@ class UserProvider with ChangeNotifier {
 
   clearData() {
     this.user = null;
+    this.notifyListeners();
   }
 
   loading() {

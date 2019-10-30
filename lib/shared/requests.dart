@@ -10,6 +10,7 @@ final Map<String, String> defaultAuthHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded'
 };
 const String oauthUrlBase = "https://www.reddit.com/api/v1";
+const String redditBasicUrl = "https://www.reddit.com/";
 const String urlBase = "https://www.oauth.reddit.com";
 const String apiV1 = "/api/v1";
 
@@ -17,6 +18,12 @@ String authUrlBuilder(String endpoint) {
   String realEndpoint = endpoint;
   if (!endpoint.startsWith("/")) realEndpoint = "/" + endpoint;
   return oauthUrlBase + realEndpoint;
+}
+
+String nonOauthUrlBuilder(String endpoint) {
+  String realEndpoint = endpoint;
+  if (!endpoint.startsWith("/")) realEndpoint = "/" + endpoint;
+  return redditBasicUrl + realEndpoint;
 }
 
 String urlBuilder(String endpoint, {bool isApiV1 = false}) {

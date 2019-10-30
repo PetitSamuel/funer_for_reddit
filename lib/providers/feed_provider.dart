@@ -52,8 +52,8 @@ class FeedProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadUnauthentificatedPosts() async {
-    String url = urlBuilder("${this.subreddit}" +
-        "${this.sort}/?limit=15&after=${this.after}.json");
+    String url = nonOauthUrlBuilder(
+        "${this.subreddit}" + "${this.sort}.json?limit=15&after=${this.after}");
     var response = await buildRequestAndGet(url, headers: {
       'User-Agent': USER_AGENT,
     });
