@@ -76,7 +76,7 @@ class SinglePostModel {
   String name;
   List<Null> awarders;
   bool mediaOnly;
-  // PostsFeedDataChildrenDataPreview preview;
+  //PostsFeedDataChildrenDataPreview preview;
   dynamic numReports;
   bool pinned;
   bool hidden;
@@ -102,6 +102,7 @@ class SinglePostModel {
   dynamic bannedBy;
   bool contestMode;
   bool isRedditMediaDomain;
+  SinglePostModel crossParent;
 
   SinglePostModel(
       {this.secureMedia,
@@ -204,9 +205,11 @@ class SinglePostModel {
       this.category,
       this.bannedBy,
       this.contestMode,
-      this.isRedditMediaDomain});
+      this.isRedditMediaDomain,
+      this.crossParent});
 
   static SinglePostModel fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
     return new SinglePostModel(
       secureMedia: json['secure_media'],
       saved: json['saved'],
@@ -341,6 +344,18 @@ class SinglePostModel {
       bannedBy: json['banned_by'],
       contestMode: json['contest_mode'],
       isRedditMediaDomain: json['is_reddit_media_domain'],
+      crossParent: json['crosspost_parent_list'] == null
+          ? null
+          : SinglePostModel.fromJson(json['crosspost_parent_list'][0]),
     );
+  }
+
+  static List<SinglePostModel> listFromJsonList(List<dynamic> values) {
+    if (values == null || values.length == 0) {
+      return [];
+    }
+    return values.map((v) {
+      return SinglePostModel.fromJson(v);
+    }).toList();
   }
 }

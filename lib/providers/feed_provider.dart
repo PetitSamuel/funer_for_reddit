@@ -14,6 +14,7 @@ class FeedProvider with ChangeNotifier {
   String subreddit = "";
   String sort = "hot";
   String after = "";
+  String timeframe = "";
   bool clearOnReload = false;
   List<SinglePostModel> posts;
 
@@ -26,10 +27,23 @@ class FeedProvider with ChangeNotifier {
 
   bool get signedIn => storage.signInStatus;
   bool get isLoading => _isLoading;
+  bool get showTimeOption => this.sort == 'top' || this.sort == 'controversial';
 
   setSort(String s) {
     this.sort = s;
     this.clearOnReload = true;
+    if (this.sort == 'top' || this.sort == 'controversial') {
+      this.timeframe = "day";
+    } else {
+      this.timeframe = "";
+    }
+    notifyListeners();
+  }
+
+  setTimeframe(String time) {
+    this.timeframe = time;
+    this.clearOnReload = true;
+    notifyListeners();
   }
 
   updateWithClearOnReload() {
@@ -38,9 +52,12 @@ class FeedProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadSignedInPosts() async {
+    print(this.timeframe);
+    print("hey");
     String token = await storage.accessToken;
-    String url = urlBuilder(
-        "${this.subreddit}" + "${this.sort}/?limit=15&after=${this.after}");
+    String url = urlBuilder("${this.subreddit}" +
+        "${this.sort}/?limit=15&after=${this.after}&t=${this.timeframe}");
+    print(url);
     var response = await buildRequestAndGet(url, accessToken: token);
     if (response.statusCode != 200) {
       // error occured, return null

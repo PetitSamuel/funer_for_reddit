@@ -4,6 +4,7 @@ import 'package:funer_for_reddit/widgets/drawer_header.dart';
 import 'package:funer_for_reddit/widgets/feed.dart';
 import 'package:funer_for_reddit/widgets/sort_options_popup_menu.dart';
 import 'package:funer_for_reddit/widgets/subreddits_list_drawer_widget.dart';
+import 'package:funer_for_reddit/widgets/time_frame_options_popup.dart';
 import 'package:funer_for_reddit/widgets/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -53,6 +54,14 @@ class _HomePageState extends State<HomePage> {
             },
             onSelected: (String sort) => updateSort(sort),
           ),
+          if (this.showTimeOption)
+            PopupMenuButton(
+              child: Icon(Icons.access_time),
+              itemBuilder: (BuildContext context) {
+                return timeFramePostsOptions(context, this.timeFrame);
+              },
+              onSelected: (String time) => updateTime(time),
+            ),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
@@ -106,5 +115,12 @@ class _HomePageState extends State<HomePage> {
     Provider.of<FeedProvider>(context).fetchPostsListing();
   }
 
+  updateTime(String time) {
+    Provider.of<FeedProvider>(context).setTimeframe(time);
+    Provider.of<FeedProvider>(context).fetchPostsListing();
+  }
+
   String get sort => Provider.of<FeedProvider>(context).sort;
+  String get timeFrame => Provider.of<FeedProvider>(context).timeframe;
+  bool get showTimeOption => Provider.of<FeedProvider>(context).showTimeOption;
 }

@@ -31,6 +31,10 @@ dependencies:
   flutter_webview_plugin: ^0.3.8
   cached_network_image: ^1.1.2+1
   timeago: ^2.0.21
+  validators: ^2.0.0+1
+  video_player: ^0.10.2+5
+  chewie: ^0.9.8+1
+  auto_orientation: ^0.0.2
 
 dev_dependencies:
   flutter_test:

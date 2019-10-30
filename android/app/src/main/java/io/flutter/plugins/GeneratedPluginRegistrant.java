@@ -1,11 +1,14 @@
 package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
+import de.bytepark.autoorientation.AutoOrientationPlugin;
 import com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin;
 import com.flutter_webview_plugin.FlutterWebviewPlugin;
 import io.flutter.plugins.pathprovider.PathProviderPlugin;
+import flutter.plugins.screen.screen.ScreenPlugin;
 import com.tekartik.sqflite.SqflitePlugin;
 import io.flutter.plugins.urllauncher.UrlLauncherPlugin;
+import io.flutter.plugins.videoplayer.VideoPlayerPlugin;
 
 /**
  * Generated file. Do not edit.
@@ -15,11 +18,14 @@ public final class GeneratedPluginRegistrant {
     if (alreadyRegisteredWith(registry)) {
       return;
     }
+    AutoOrientationPlugin.registerWith(registry.registrarFor("de.bytepark.autoorientation.AutoOrientationPlugin"));
     FlutterSecureStoragePlugin.registerWith(registry.registrarFor("com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin"));
     FlutterWebviewPlugin.registerWith(registry.registrarFor("com.flutter_webview_plugin.FlutterWebviewPlugin"));
     PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));
+    ScreenPlugin.registerWith(registry.registrarFor("flutter.plugins.screen.screen.ScreenPlugin"));
     SqflitePlugin.registerWith(registry.registrarFor("com.tekartik.sqflite.SqflitePlugin"));
     UrlLauncherPlugin.registerWith(registry.registrarFor("io.flutter.plugins.urllauncher.UrlLauncherPlugin"));
+    VideoPlayerPlugin.registerWith(registry.registrarFor("io.flutter.plugins.videoplayer.VideoPlayerPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

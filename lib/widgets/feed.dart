@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/shared/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/shared/number_formatting_helper_functions.dart';
+import 'package:funer_for_reddit/widgets/video_player_widget.dart';
 
 Widget subredditFeedListView(
     List<SinglePostModel> posts, ScrollController _scrollCtrl) {
@@ -25,7 +26,12 @@ Widget subredditFeedListView(
       var post = posts[index];
       return Card(
           child: ListTile(
-        title: Text(posts[index].author + " - " + posts[index].title),
+        title: Text(posts[index].author +
+            " - " +
+            posts[index].title +
+            ' - (' +
+            getTimeAgoAsString(post.created) +
+            ').'),
         subtitle: Column(
           children: <Widget>[
             if (post.selftext.length != 0)
@@ -44,9 +50,42 @@ Widget subredditFeedListView(
                   ),
                   Text(fromIntToFormattedKString(post.numComments) +
                       " comments"),
-                  Text(post.subreddit),
-                  //HERE
-                  Text(getTimeAgoAsString(post.created)),
+                  Text(
+                    post.subredditNamePrefixed,
+                  ),
+                ],
+              ),
+            ),
+            if (post.media != null && post.media['reddit_video'] != null)
+              VideoPlayerScreen(
+                  url: post.media['reddit_video']['fallback_url']),
+            if (post.crossParent != null &&
+                post.crossParent.media != null &&
+                post.crossParent.media['reddit_video'] != null)
+              VideoPlayerScreen(
+                  url: post.crossParent.media['reddit_video']['fallback_url']),
+            /*
+            else if(isURL(post.thumbnail ?? ""))   
+              Center(
+                child: Image.network(
+                  post.url,
+                  fit: BoxFit.fitWidth,
+                ),
+              )
+              */
+            Container(
+              margin: EdgeInsets.only(top: 5, bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.arrow_upward),
+                    onPressed: () => print("pressed :)"),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_downward),
+                    onPressed: () => print("pressed :)"),
+                  ),
                 ],
               ),
             ),
