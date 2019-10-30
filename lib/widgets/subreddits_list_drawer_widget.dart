@@ -37,7 +37,6 @@ Widget drawerSubredditsListView() {
                         ),
                       ),
                 onTap: () {
-                  print(current.url);
                   Provider.of<FeedProvider>(context)
                       .fetchPostsListing(sub: current.url);
                   Navigator.pop(context);

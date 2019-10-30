@@ -12,7 +12,6 @@ Widget subredditFeedListView(
       ),
     );
   }
-  print(posts.length);
   return Container(
       child: Expanded(
           child: ListView.builder(

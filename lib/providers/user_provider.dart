@@ -13,7 +13,7 @@ class UserProvider with ChangeNotifier {
   UserInformationModel user;
   List<SubscribedSubredditModel> subreddits;
   bool _isLoading = false;
-
+  String after = "";
   UserProvider() {
     subreddits = new List();
     loadUserInformation();
@@ -43,13 +43,16 @@ class UserProvider with ChangeNotifier {
 
     if (response.statusCode != 200) {
       // an error occured, show error message  & return
+      print("error when loading user info");
       return;
     }
     user = UserInformationModel.fromJson(json.decode(response.body));
   }
 
   Future<void> handleGetUserSubreddits() async {
-    String url = urlBuilder("subreddits/mine/subscriber/?limit=100");
+    String url =
+        urlBuilder("subreddits/mine/subscriber/?limit=100&after=${this.after}");
+    print(url);
     String accessToken = await storage.accessToken;
     if (accessToken == null || accessToken.isEmpty) return;
     final response = await buildRequestAndGet(url, accessToken: accessToken);
@@ -66,9 +69,10 @@ class UserProvider with ChangeNotifier {
     for (SubscribedSubredditModel x in subsList) {
       this.subreddits.add(x);
     }
-    print("stop!");
     this.subreddits.sort((a, b) =>
         a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
+    this.after = subRedditMap['data']['after'] ?? "";
+    print(after);
   }
 
   Future<void> loadUserInformation() async {
@@ -76,6 +80,11 @@ class UserProvider with ChangeNotifier {
     await handleGetMe();
     await handleGetUserSubreddits();
     stopLoading();
+
+    while (this.after != "") {
+      await handleGetUserSubreddits();
+      notifyListeners();
+    }
   }
 
   clearData() {

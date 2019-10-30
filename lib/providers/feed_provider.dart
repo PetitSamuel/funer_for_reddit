@@ -41,7 +41,6 @@ class FeedProvider with ChangeNotifier {
     String token = await storage.accessToken;
     String url = urlBuilder(
         "${this.subreddit}" + "${this.sort}/?limit=15&after=${this.after}");
-    print(url);
     var response = await buildRequestAndGet(url, accessToken: token);
     if (response.statusCode != 200) {
       // error occured, return null
