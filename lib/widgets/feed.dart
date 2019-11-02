@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/pages/post_page.dart';
+import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/shared/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/shared/number_formatting_helper_functions.dart';
 import 'package:funer_for_reddit/widgets/video_player_widget.dart';
+import 'package:provider/provider.dart';
 
 Widget subredditFeedListView(
     List<SinglePostModel> posts, ScrollController _scrollCtrl) {
@@ -26,6 +29,9 @@ Widget subredditFeedListView(
       var post = posts[index];
       return Card(
           child: ListTile(
+        onTap: () {
+          pushPostPage(context, post);
+        },
         title: Text(posts[index].author +
             " - " +
             posts[index].title +
@@ -65,14 +71,14 @@ Widget subredditFeedListView(
               VideoPlayerScreen(
                   url: post.crossParent.media['reddit_video']['fallback_url']),
             /*
-            else if(isURL(post.thumbnail ?? ""))   
-              Center(
-                child: Image.network(
-                  post.url,
-                  fit: BoxFit.fitWidth,
-                ),
-              )
-              */
+                    else if(isURL(post.thumbnail ?? ""))   
+                      Center(
+                        child: Image.network(
+                          post.url,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      )
+                      */
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: Row(
@@ -94,4 +100,16 @@ Widget subredditFeedListView(
       ));
     },
   )));
+}
+
+pushPostPage(BuildContext context, SinglePostModel post) {
+  Provider.of<CommentsProvider>(context)
+      .fetchComments(post.subredditNamePrefixed, post.id);
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostPage(post: post),
+      )).then((value) {
+    Provider.of<CommentsProvider>(context).clearComments();
+  });
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         builder: (_) => FeedProvider(),
+      ),
+      ChangeNotifierProvider(
+        builder: (_) => CommentsProvider(),
       ),
     ],
     child: MyApp(),

@@ -1,11 +1,10 @@
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
-  String url;
+  final String url;
   VideoPlayerScreen({this.url});
 
   @override
