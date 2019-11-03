@@ -4,11 +4,11 @@ import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/pages/post_page.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
-import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:funer_for_reddit/shared/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/shared/number_formatting_helper_functions.dart';
 import 'package:funer_for_reddit/widgets/video_player_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 Widget subredditFeedListView(
     List<SinglePostModel> posts, ScrollController _scrollCtrl) {
@@ -110,7 +110,8 @@ Widget subredditFeedListView(
                   ),
                   IconButton(
                     icon: Icon(Icons.share),
-                    onPressed: () => print("share boi"),
+                    onPressed: () async =>
+                        await Share.share('www.reddit.com${post.permalink}'),
                   ),
                 ],
               ),
