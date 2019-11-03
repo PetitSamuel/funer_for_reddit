@@ -23,7 +23,7 @@ Widget subredditFeedListView(
   return Container(
       child: Expanded(
           child: ListView.builder(
-    padding: EdgeInsets.only(bottom: 48),
+    padding: EdgeInsets.only(bottom: 4),
     controller: _scrollCtrl,
     scrollDirection: Axis.vertical,
     shrinkWrap: true,
@@ -69,12 +69,18 @@ Widget subredditFeedListView(
             ),
             if (post.media != null && post.media['reddit_video'] != null)
               VideoPlayerScreen(
-                  url: post.media['reddit_video']['fallback_url']),
+                url: post.media['reddit_video']['fallback_url'],
+                h: post.media['reddit_video']['height'],
+                w: post.media['reddit_video']['width'],
+              ),
             if (post.crossParent != null &&
                 post.crossParent.media != null &&
                 post.crossParent.media['reddit_video'] != null)
               VideoPlayerScreen(
-                  url: post.crossParent.media['reddit_video']['fallback_url']),
+                url: post.crossParent.media['reddit_video']['fallback_url'],
+                h: post.crossParent.media['reddit_video']['height'],
+                w: post.crossParent.media['reddit_video']['width'],
+              ),
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: Row(

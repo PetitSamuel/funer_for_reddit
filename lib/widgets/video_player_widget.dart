@@ -5,7 +5,9 @@ import 'package:chewie/chewie.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
-  VideoPlayerScreen({this.url});
+  final int w;
+  final int h;
+  VideoPlayerScreen({this.url, this.h, this.w});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -19,12 +21,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void initState() {
     AutoOrientation.portraitMode();
     videoPlayerController = VideoPlayerController.network(widget.url);
-
+    double ratio = 0;
+    if (widget.h != null && widget.w != null) {
+      ratio = widget.w / widget.h;
+    }
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
-      autoPlay: true,
+      autoPlay: false,
       looping: true,
       autoInitialize: true,
+      aspectRatio: ratio,
     );
 
     playerWidget = Chewie(

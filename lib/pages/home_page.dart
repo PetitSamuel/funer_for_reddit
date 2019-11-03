@@ -81,14 +81,14 @@ class _HomePageState extends State<HomePage> {
         child: Provider.of<AuthentificatorProvider>(context).isLoading
             ? CircularProgressIndicator()
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   subredditFeedListView(
                       Provider.of<FeedProvider>(context).posts,
                       _scrollController),
                   if (Provider.of<FeedProvider>(context).isLoading)
-                    Center(child: CircularProgressIndicator()),
+                    Center(child: LinearProgressIndicator()),
                 ],
               ),
       ),
