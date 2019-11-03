@@ -1,3 +1,6 @@
+/*
+ * Helper functions for formatting number to be displayed on widgets. 
+*/
 String fromIntToFormattedKString(int v) {
   String out = '';
   if (v >= 10000) {

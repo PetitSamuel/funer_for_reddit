@@ -1,8 +1,11 @@
-import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
+/*
+ *  Video Player widget. Takes a url, optionally height & width.
+ *  Then handles the video playing & state management in here.
+*/
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
   final int w;
@@ -19,7 +22,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   var playerWidget;
   @override
   void initState() {
-    AutoOrientation.portraitMode();
     videoPlayerController = VideoPlayerController.network(widget.url);
     double ratio = 0;
     if (widget.h != null && widget.w != null) {
@@ -41,11 +43,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   @override
   void dispose() {
-    AutoOrientation.portraitMode();
-
     videoPlayerController.dispose();
     chewieController.dispose();
-    // Ensure disposing of the VideoPlayerController to free up resources.
     super.dispose();
   }
 

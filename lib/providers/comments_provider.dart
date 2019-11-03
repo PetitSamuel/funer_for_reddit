@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
+import 'package:funer_for_reddit/shared/secure_storage_shared.dart';
 import 'package:funer_for_reddit/models/comments/comment_model.dart';
-import 'package:funer_for_reddit/shared/requests.dart';
+import 'package:funer_for_reddit/shared/requests_shared.dart';
 
 class CommentsProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -16,7 +16,7 @@ class CommentsProvider with ChangeNotifier {
 
   CommentsProvider();
 
-  final SecureStorageHelper storage = new SecureStorageHelper();
+  final SecureStorageShared storage = new SecureStorageShared();
 
   bool get isLoading => _isLoading;
   bool get hasComments => comments == null || comments.length > 0;

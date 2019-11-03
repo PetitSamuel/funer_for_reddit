@@ -1,7 +1,6 @@
 package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
-import de.bytepark.autoorientation.AutoOrientationPlugin;
 import com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin;
 import com.flutter_webview_plugin.FlutterWebviewPlugin;
 import io.flutter.plugins.pathprovider.PathProviderPlugin;
@@ -18,7 +17,6 @@ public final class GeneratedPluginRegistrant {
     if (alreadyRegisteredWith(registry)) {
       return;
     }
-    AutoOrientationPlugin.registerWith(registry.registrarFor("de.bytepark.autoorientation.AutoOrientationPlugin"));
     FlutterSecureStoragePlugin.registerWith(registry.registrarFor("com.it_nomads.fluttersecurestorage.FlutterSecureStoragePlugin"));
     FlutterWebviewPlugin.registerWith(registry.registrarFor("com.flutter_webview_plugin.FlutterWebviewPlugin"));
     PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));

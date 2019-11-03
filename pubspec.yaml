@@ -32,7 +32,6 @@ dependencies:
   timeago: ^2.0.21
   video_player: ^0.10.2+5
   chewie: ^0.9.8+1
-  auto_orientation: ^0.0.2
   share: ^0.6.3+1
 
 dev_dependencies:

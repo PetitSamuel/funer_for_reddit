@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/comments/comment_model.dart';
 
-List<Widget> fromListToComment(List<CommentModel> list) {
-  List<Widget> l = new List();
-  for (final item in list) {
-    l.add(singleCommentCardWidget(item));
-  }
-  return l;
-}
-
+/*
+ * Widget for a single comment. Recursively generates reply comments.
+*/
 Widget singleCommentCardWidget(CommentModel comment, {double margin = 0}) {
   return Container(
     margin: EdgeInsets.only(left: margin),

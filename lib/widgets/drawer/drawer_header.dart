@@ -3,6 +3,12 @@ import 'package:funer_for_reddit/providers/authentificator_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
+/*
+ * A widget displayed at the very top of the drawer.
+ * Shows a sign in widget if the user is not logged in.
+ * If user provider is loading, then displays a loading widget.
+ * When the user is loading, his username and icon is displayed.
+*/
 Widget drawerHeader(_changeDisplayState) {
   return Consumer<UserProvider>(
     builder: (BuildContext context, UserProvider model, _) {
@@ -33,11 +39,6 @@ Widget drawerHeader(_changeDisplayState) {
                 _changeDisplayState(expanding),
             leading: CircleAvatar(child: Image.network(model.user.iconImg)),
             title: Text(model.user.name),
-            children: <Widget>[
-              ListTile(
-                trailing: Icon(Icons.power_settings_new),
-              ),
-            ],
           ),
         ],
       );

@@ -1,4 +1,4 @@
-class SubscribedSubredditModel {
+class SubredditModel {
   final Object userFlairBackgroundColor;
   final Object submitTextHtml;
   final bool restrictPosting;
@@ -89,7 +89,7 @@ class SubscribedSubredditModel {
   final String mobileBannerImage;
   final bool userIsContributor;
 
-  SubscribedSubredditModel(
+  SubredditModel(
       {this.userFlairBackgroundColor,
       this.submitTextHtml,
       this.restrictPosting,
@@ -180,8 +180,8 @@ class SubscribedSubredditModel {
       this.mobileBannerImage,
       this.userIsContributor});
 
-  static SubscribedSubredditModel fromJson(Map<String, dynamic> json) {
-    return new SubscribedSubredditModel(
+  static SubredditModel fromJson(Map<String, dynamic> json) {
+    return new SubredditModel(
       userFlairBackgroundColor: json["user_flair_background_color"],
       submitTextHtml: json["submit_text_html"],
       restrictPosting: json["restrict_posting"],

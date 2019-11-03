@@ -3,12 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
+import 'package:funer_for_reddit/shared/secure_storage_shared.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/secret/secret.dart';
 import 'package:funer_for_reddit/shared/constants.dart';
-
-import 'package:funer_for_reddit/shared/requests.dart';
+import 'package:funer_for_reddit/shared/requests_shared.dart';
 
 class FeedProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -18,14 +17,14 @@ class FeedProvider with ChangeNotifier {
   String after = "";
   String timeframe = "";
   bool clearOnReload = false;
-  List<SinglePostModel> posts;
+  List<PostModel> posts;
 
   FeedProvider() {
     posts = new List();
     fetchPostsListing();
   }
 
-  final SecureStorageHelper storage = new SecureStorageHelper();
+  final SecureStorageShared storage = new SecureStorageShared();
 
   bool get signedIn => storage.signInStatus;
   bool get isLoading => _isLoading;
@@ -112,7 +111,7 @@ class FeedProvider with ChangeNotifier {
       return;
     }
     var p = response['data']['children'].map((e) {
-      return SinglePostModel.fromJson(e['data']);
+      return PostModel.fromJson(e['data']);
     }).toList();
     p.forEach((x) => this.posts.add(x));
     this.after = response['data']['after'] ?? "";
@@ -153,7 +152,7 @@ class FeedProvider with ChangeNotifier {
     dynamic body = "id=$post&dir=$dir&api_type=json";
 
     var response = await buildRequestAndPost(url,
-        body: body, headers: buildPostHeadersFromToken(access));
+        body: body, headers: buildHeadersFromToken(access));
 
     if (response.statusCode != 200) {
       print("here");
@@ -161,7 +160,7 @@ class FeedProvider with ChangeNotifier {
       return false;
     }
 
-    SinglePostModel item = this.posts.singleWhere((item) => item.name == post);
+    PostModel item = this.posts.singleWhere((item) => item.name == post);
     if (dir == UPVOTE_DIR) {
       item.likes = true;
     } else if (dir == DOWNVOTE_DIR) {

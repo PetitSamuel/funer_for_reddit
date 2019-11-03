@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
-import 'package:funer_for_reddit/widgets/comments_tree_widget.dart';
+import 'package:funer_for_reddit/widgets/comments/comments_tree_widget.dart';
 import 'package:provider/provider.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key key, this.post}) : super(key: key);
 
-  final SinglePostModel post;
+  final PostModel post;
 
   @override
   _PostPageState createState() => _PostPageState();

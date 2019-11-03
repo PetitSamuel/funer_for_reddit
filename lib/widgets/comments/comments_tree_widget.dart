@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/comments/comment_model.dart';
-import 'package:funer_for_reddit/widgets/single_comment_card_widget.dart';
+import 'package:funer_for_reddit/widgets/comments/single_comment_card_widget.dart';
 
+/*
+ * Takes a context and list of comments. 
+ * Returns a Widget which represent all of those comments as a tree.
+*/
 Widget commentsTree(BuildContext context, List<CommentModel> comments) {
   if (comments == null || comments.length <= 0) {
     return Container();

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/*
+ *  A Popup menu with buttons.
+ *  They are the options to select a 
+ *  time frame for certain feeds posts sorting. 
+*/
 List<PopupMenuEntry<String>> timeFramePostsOptions(
     BuildContext context, String time) {
   return <PopupMenuEntry<String>>[

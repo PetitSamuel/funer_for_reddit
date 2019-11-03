@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:funer_for_reddit/shared/requests.dart';
+import 'package:funer_for_reddit/shared/requests_shared.dart';
 
-class SecureStorageHelper {
+class SecureStorageShared {
   final _storage = new FlutterSecureStorage();
   Map<String, dynamic> map;
 
-  SecureStorageHelper() {
+  SecureStorageShared() {
     init();
   }
 

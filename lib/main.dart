@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/pages/home_page.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
-import 'package:funer_for_reddit/shared/http_client_overrides.dart';
+import 'package:funer_for_reddit/network/http_client_overrides.dart';
 import 'package:funer_for_reddit/providers/authentificator_provider.dart';
 
 void main() {

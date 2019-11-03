@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*
+ *  A Popup menu with buttons.
+ *  They are the sorting options for the feed.
+*/
 List<PopupMenuEntry<String>> sortOptionsPopupMenu(
     BuildContext context, String sort) {
   return <PopupMenuEntry<String>>[
@@ -56,6 +60,5 @@ List<PopupMenuEntry<String>> sortOptionsPopupMenu(
         enabled: 'rising' != sort,
       ),
     ),
-    const PopupMenuDivider(),
   ];
 }

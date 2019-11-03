@@ -1,6 +1,6 @@
 import 'package:funer_for_reddit/models/post_models/link_flair_richtext_model.dart';
 
-class SinglePostModel {
+class PostModel {
   dynamic approvedAtUtc;
   String subreddit;
   String selftext;
@@ -102,9 +102,9 @@ class SinglePostModel {
   dynamic bannedBy;
   bool contestMode;
   bool isRedditMediaDomain;
-  SinglePostModel crossParent;
+  PostModel crossParent;
 
-  SinglePostModel(
+  PostModel(
       {this.secureMedia,
       this.saved,
       this.hideScore,
@@ -208,9 +208,9 @@ class SinglePostModel {
       this.isRedditMediaDomain,
       this.crossParent});
 
-  static SinglePostModel fromJson(Map<String, dynamic> json) {
+  static PostModel fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
-    return new SinglePostModel(
+    return new PostModel(
       secureMedia: json['secure_media'],
       saved: json['saved'],
       hideScore: json['hide_score'],
@@ -346,16 +346,16 @@ class SinglePostModel {
       isRedditMediaDomain: json['is_reddit_media_domain'],
       crossParent: json['crosspost_parent_list'] == null
           ? null
-          : SinglePostModel.fromJson(json['crosspost_parent_list'][0]),
+          : PostModel.fromJson(json['crosspost_parent_list'][0]),
     );
   }
 
-  static List<SinglePostModel> listFromJsonList(List<dynamic> values) {
+  static List<PostModel> listFromJsonList(List<dynamic> values) {
     if (values == null || values.length == 0) {
       return [];
     }
     return values.map((v) {
-      return SinglePostModel.fromJson(v);
+      return PostModel.fromJson(v);
     }).toList();
   }
 }

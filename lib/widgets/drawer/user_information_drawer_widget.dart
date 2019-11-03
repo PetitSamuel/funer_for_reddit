@@ -3,23 +3,23 @@ import 'package:funer_for_reddit/providers/authentificator_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-Widget userProfiles(BuildContext context) {
-  bool signedIn = Provider.of<AuthentificatorProvider>(context).signedIn;
+/*
+ * Body of the drawer when the header is expanded.
+ * Contains sign out button and debugging buttons for now.
+*/
+Widget userInformationDrawerHeader(
+    BuildContext context, Function _changeDisplayState) {
   return Container(
     child: ListView(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         children: <Widget>[
           ListTile(
-            title: Text(signedIn ? "Sign out" : "Sign in"),
+            title: Text("Sign out"),
             onTap: () {
-              if (signedIn) {
-                Provider.of<AuthentificatorProvider>(context).signOutUser();
-                Provider.of<UserProvider>(context).clearData();
-              } else {
-                Provider.of<AuthentificatorProvider>(context)
-                    .authenticateUser(context);
-              }
+              Provider.of<AuthentificatorProvider>(context).signOutUser();
+              Provider.of<UserProvider>(context).clearData();
+              _changeDisplayState(false);
             },
             trailing: Icon(Icons.power_settings_new),
           ),

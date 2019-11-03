@@ -1,3 +1,5 @@
+import 'package:funer_for_reddit/shared/constants.dart';
+
 class CommentModel {
   int totalAwardsReceived;
   double approvedAtUtc;
@@ -221,7 +223,8 @@ class CommentModel {
       if (child == null) {
         continue;
       }
-      if (child["kind"] != "t1") {
+      // check if kind is comment
+      if (child["kind"] != COMMENT_TYPE) {
         continue;
       }
       Map<String, dynamic> commentData = child["data"];

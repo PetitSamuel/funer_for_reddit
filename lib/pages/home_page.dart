@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
-import 'package:funer_for_reddit/widgets/drawer_header.dart';
-import 'package:funer_for_reddit/widgets/feed.dart';
-import 'package:funer_for_reddit/widgets/sort_options_popup_menu.dart';
-import 'package:funer_for_reddit/widgets/subreddits_list_drawer_widget.dart';
-import 'package:funer_for_reddit/widgets/time_frame_options_popup.dart';
-import 'package:funer_for_reddit/widgets/user_information_drawer_widget.dart';
+import 'package:funer_for_reddit/widgets/drawer/drawer_header.dart';
+import 'package:funer_for_reddit/widgets/feed/feed_body_widget.dart';
+import 'package:funer_for_reddit/widgets/popup_buttons/sort_options_popup_menu.dart';
+import 'package:funer_for_reddit/widgets/drawer/subreddit_drawer_body_widget.dart';
+import 'package:funer_for_reddit/widgets/popup_buttons/time_frame_options_popup.dart';
+import 'package:funer_for_reddit/widgets/drawer/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/providers/authentificator_provider.dart';
@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (Provider.of<FeedProvider>(context).isLoading) _showUserProfiles = false;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -84,8 +85,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  subredditFeedListView(
-                      Provider.of<FeedProvider>(context).posts,
+                  feedBody(Provider.of<FeedProvider>(context).posts,
                       _scrollController),
                   if (Provider.of<FeedProvider>(context).isLoading)
                     Center(child: LinearProgressIndicator()),
@@ -106,6 +106,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 child: ListView(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   children: <Widget>[
                     ListTile(
                       title: Text("Home page"),
@@ -125,8 +126,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             _showUserProfiles
-                ? userProfiles(context)
-                : drawerSubredditsListView(),
+                ? userInformationDrawerHeader(context, updateShowUserProfile)
+                : subredditDrawerBody(),
           ],
         ),
       ),

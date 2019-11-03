@@ -3,27 +3,30 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/helpers/secure_storage_helper.dart';
+import 'package:funer_for_reddit/shared/secure_storage_shared.dart';
 import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
 import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
-
-import 'package:funer_for_reddit/shared/requests.dart';
+import 'package:funer_for_reddit/shared/requests_shared.dart';
 
 class UserProvider with ChangeNotifier {
   UserInformationModel user;
-  List<SubscribedSubredditModel> subreddits;
+  List<SubredditModel> subreddits;
   bool _isLoading = false;
+  bool _isLoadingSubs = false;
   String after = "";
   UserProvider() {
-    subreddits = new List();
     loadUserInformation();
   }
 
-  final SecureStorageHelper storage = new SecureStorageHelper();
+  final SecureStorageShared storage = new SecureStorageShared();
 
   bool get signedIn => storage.signInStatus;
   bool get isLoading => _isLoading;
-  List<SubscribedSubredditModel> get subscribedSubReddits {
+  bool get isLoadingSubreddits => _isLoadingSubs;
+  bool get hasSubredditsToDisplay =>
+      this.subreddits != null && this.subreddits.length == 0;
+  List<SubredditModel> get subscribedSubReddits {
+    if (this.subreddits == null) return [];
     return this.subreddits;
   }
 
@@ -36,6 +39,9 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> handleGetMe() async {
+    if (this.after == "") {
+      this.subreddits = new List();
+    }
     String url = urlBuilder("/me", isApiV1: true);
     String accessToken = await storage.accessToken;
     if (accessToken == null || accessToken.isEmpty) return;
@@ -50,8 +56,10 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<void> handleGetUserSubreddits() async {
+    _isLoadingSubs = true;
+    notifyListeners();
     String url =
-        urlBuilder("subreddits/mine/subscriber/?limit=100&after=${this.after}");
+        urlBuilder("subreddits/mine/subscriber/?limit=50&after=${this.after}");
     String accessToken = await storage.accessToken;
     if (accessToken == null || accessToken.isEmpty) return;
     final response = await buildRequestAndGet(url, accessToken: accessToken);
@@ -62,22 +70,24 @@ class UserProvider with ChangeNotifier {
     }
     Map<String, dynamic> subRedditMap = json.decode(response.body);
     List subsList = subRedditMap['data']['children'].map((e) {
-      return SubscribedSubredditModel.fromJson(e['data']);
+      return SubredditModel.fromJson(e['data']);
     }).toList();
 
-    for (SubscribedSubredditModel x in subsList) {
+    for (SubredditModel x in subsList) {
       this.subreddits.add(x);
     }
     this.subreddits.sort((a, b) =>
         a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
     this.after = subRedditMap['data']['after'] ?? "";
+    _isLoadingSubs = false;
+    notifyListeners();
   }
 
   Future<void> loadUserInformation() async {
     loading();
     await handleGetMe();
-    await handleGetUserSubreddits();
     stopLoading();
+    await handleGetUserSubreddits();
 
     while (this.after != "") {
       // todo: indicate loading status here in the drawer
@@ -88,6 +98,7 @@ class UserProvider with ChangeNotifier {
 
   clearData() {
     this.user = null;
+    this.subreddits = new List();
     this.notifyListeners();
   }
 
