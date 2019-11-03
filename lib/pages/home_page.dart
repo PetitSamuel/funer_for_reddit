@@ -42,6 +42,13 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Provider.of<FeedProvider>(context)
+                  .setSubredditAndFetchWithClear("");
+            },
+          ),
+          IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               print("search!");
@@ -95,6 +102,28 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(0.0)),
               height: 65,
             ),
+            if (!_showUserProfiles)
+              Container(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("Home page"),
+                      leading: Icon(
+                        Icons.home,
+                        color:
+                            Provider.of<FeedProvider>(context).subreddit == ""
+                                ? Colors.blue
+                                : Colors.white,
+                      ),
+                      onTap: () {
+                        goHomePage();
+                      },
+                    ),
+                    Divider(),
+                  ],
+                ),
+              ),
             _showUserProfiles
                 ? userProfiles(context)
                 : drawerSubredditsListView(),
@@ -108,6 +137,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _showUserProfiles = value;
     });
+  }
+
+  goHomePage() {
+    Provider.of<FeedProvider>(context).setSubredditAndFetchWithClear("");
+    Navigator.pop(context);
   }
 
   updateSort(String sort) {

@@ -7,11 +7,11 @@ final String basicAuth =
     "Basic " + base64Encode(utf8.encode('$CLIENT_ID:$PASSWORD'));
 final Map<String, String> defaultAuthHeaders = {
   "Authorization": basicAuth,
-  'Content-Type': 'application/x-www-form-urlencoded'
+  'Content-Type': 'application/x-www-form-urlencoded',
 };
 const String oauthUrlBase = "https://www.reddit.com/api/v1";
-const String redditBasicUrl = "https://www.reddit.com/";
-const String urlBase = "https://www.oauth.reddit.com";
+const String redditBasicUrl = "https://reddit.com/";
+const String urlBase = "https://oauth.reddit.com";
 const String apiV1 = "/api/v1";
 
 String authUrlBuilder(String endpoint) {
@@ -32,10 +32,18 @@ String urlBuilder(String endpoint, {bool isApiV1 = false}) {
   return urlBase + (isApiV1 ? apiV1 : "") + realEndpoint;
 }
 
+dynamic buildPostHeadersFromToken(String access) {
+  return {
+    "Authorization": 'bearer ' + access,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'User-Agent': USER_AGENT,
+  };
+}
+
 buildHeadersFromToken(String accessToken) {
   return {
-    'Authorization': 'bearer ' + accessToken,
-    'User-Agent': USER_AGENT,
+    'authorization': 'bearer ' + accessToken,
+    'content-type': 'application/x-www-form_urlencoded',
   };
 }
 

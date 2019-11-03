@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/pages/post_page.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
+import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:funer_for_reddit/shared/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/shared/number_formatting_helper_functions.dart';
 import 'package:funer_for_reddit/widgets/video_player_widget.dart';
@@ -17,6 +19,7 @@ Widget subredditFeedListView(
       ),
     );
   }
+
   return Container(
       child: Expanded(
           child: ListView.builder(
@@ -27,6 +30,8 @@ Widget subredditFeedListView(
     itemCount: posts.length,
     itemBuilder: (context, int index) {
       var post = posts[index];
+      var voteStatus = post.likes;
+
       return Card(
           child: ListTile(
         onTap: () {
@@ -70,27 +75,42 @@ Widget subredditFeedListView(
                 post.crossParent.media['reddit_video'] != null)
               VideoPlayerScreen(
                   url: post.crossParent.media['reddit_video']['fallback_url']),
-            /*
-                    else if(isURL(post.thumbnail ?? ""))   
-                      Center(
-                        child: Image.network(
-                          post.url,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      )
-                      */
             Container(
               margin: EdgeInsets.only(top: 5, bottom: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.arrow_upward),
-                    onPressed: () => print("pressed :)"),
+                    icon: Icon(
+                      Icons.arrow_upward,
+                      color:
+                          voteStatus == true ? Colors.deepOrange : Colors.grey,
+                    ),
+                    onPressed: () {
+                      Provider.of<FeedProvider>(context)
+                          .votePost(post.name, "up", post.likes);
+                    },
                   ),
                   IconButton(
-                    icon: Icon(Icons.arrow_downward),
-                    onPressed: () => print("pressed :)"),
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      color:
+                          voteStatus == false ? Colors.blueAccent : Colors.grey,
+                    ),
+                    onPressed: () {
+                      Provider.of<FeedProvider>(context)
+                          .votePost(post.name, "down", post.likes);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.comment),
+                    onPressed: () {
+                      pushPostPage(context, post);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () => print("share boi"),
                   ),
                 ],
               ),
