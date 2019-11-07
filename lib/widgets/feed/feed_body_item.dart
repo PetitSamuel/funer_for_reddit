@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/helpers/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/helpers/navigator_helper_functions.dart';
+import 'package:funer_for_reddit/models/post_models/post_preview_model.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_item_actions_widget.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_item_information_widget.dart';
 import 'package:funer_for_reddit/widgets/media/video_player_widget.dart';
+import 'package:html_unescape/html_unescape.dart';
 
 Widget feedBodyItem(BuildContext context, PostModel post) {
+  PostPreviewImageSource imgsrc = PostModel.getPreviewImageSource(post);
+  final HtmlUnescape _htmlUnescape = new HtmlUnescape();
+  bool hasVideo = PostModel.hasVideo(post);
+  var video = PostModel.getPostVideo(post);
   return Card(
       child: ListTile(
     onTap: () {
@@ -27,19 +33,15 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
             maxLines: 3,
           ),
         feedBodyItemInformation(context, post),
-        if (post.media != null && post.media['reddit_video'] != null)
-          VideoPlayerScreen(
-            url: post.media['reddit_video']['fallback_url'],
-            h: post.media['reddit_video']['height'],
-            w: post.media['reddit_video']['width'],
+        if (imgsrc != null && !hasVideo)
+          Image.network(
+            _htmlUnescape.convert(imgsrc.url),
           ),
-        if (post.crossParent != null &&
-            post.crossParent.media != null &&
-            post.crossParent.media['reddit_video'] != null)
+        if (hasVideo)
           VideoPlayerScreen(
-            url: post.crossParent.media['reddit_video']['fallback_url'],
-            h: post.crossParent.media['reddit_video']['height'],
-            w: post.crossParent.media['reddit_video']['width'],
+            url: video['fallback_url'],
+            h: video['height'],
+            w: video['width'],
           ),
         feedBodyItemActions(context, post),
       ],

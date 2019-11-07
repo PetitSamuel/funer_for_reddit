@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
+import 'package:funer_for_reddit/widgets/app_bar/app__bar_actions_widget.dart';
+import 'package:funer_for_reddit/widgets/drawer/drawer_default_feed_options_widget.dart';
 import 'package:funer_for_reddit/widgets/drawer/drawer_header.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_widget.dart';
-import 'package:funer_for_reddit/widgets/popup_buttons/sort_options_popup_menu.dart';
 import 'package:funer_for_reddit/widgets/drawer/subreddit_drawer_body_widget.dart';
-import 'package:funer_for_reddit/widgets/popup_buttons/time_frame_options_popup.dart';
 import 'package:funer_for_reddit/widgets/drawer/user_information_drawer_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -41,42 +41,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.home),
-            onPressed: () {
-              Provider.of<FeedProvider>(context)
-                  .setSubredditAndFetchWithClear("");
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print("search!");
-            },
-          ),
-          PopupMenuButton(
-            child: Icon(Icons.sort),
-            itemBuilder: (BuildContext context) {
-              return sortOptionsPopupMenu(context, this.sort);
-            },
-            onSelected: (String sort) => updateSort(sort),
-          ),
-          if (this.showTimeOption)
-            PopupMenuButton(
-              child: Icon(Icons.access_time),
-              itemBuilder: (BuildContext context) {
-                return timeFramePostsOptions(context, this.timeFrame);
-              },
-              onSelected: (String time) => updateTime(time),
-            ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {
-              print("options!");
-            },
-          ),
-        ],
+        actions: appBarActions(context, updateSort, updateTime, this.sort,
+            this.timeFrame, this.showTimeOption),
       ),
       body: Center(
         child: Provider.of<AuthentificatorProvider>(context).isLoading
@@ -103,28 +69,7 @@ class _HomePageState extends State<HomePage> {
               height: 65,
             ),
             if (!_showUserProfiles)
-              Container(
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    ListTile(
-                      title: Text("Home page"),
-                      leading: Icon(
-                        Icons.home,
-                        color:
-                            Provider.of<FeedProvider>(context).subreddit == ""
-                                ? Colors.blue
-                                : Colors.white,
-                      ),
-                      onTap: () {
-                        goHomePage();
-                      },
-                    ),
-                    Divider(),
-                  ],
-                ),
-              ),
+              drawerDefaultFeedOptions(context, goHomePage),
             _showUserProfiles
                 ? userInformationDrawerHeader(context, updateShowUserProfile)
                 : subredditDrawerBody(),

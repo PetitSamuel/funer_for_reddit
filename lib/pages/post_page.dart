@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/widgets/comments/comments_tree_widget.dart';
+import 'package:funer_for_reddit/widgets/feed/feed_body_item_information_widget.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 
 class PostPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     var post = widget.post;
+    var imgsrc = PostModel.getPreviewImageSource(post);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -46,12 +49,32 @@ class _PostPageState extends State<PostPage> {
             margin: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
             child: ListView(
               children: <Widget>[
-                Text(
-                  post.title + '\n',
-                  softWrap: true,
-                  style: TextStyle(fontSize: 20),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (imgsrc != null)
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 12, top: 8),
+                          child: Image.network(
+                            HtmlUnescape().convert(imgsrc.url),
+                          ),
+                        ),
+                        flex: 4,
+                      ),
+                    Flexible(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 12, top: 4),
+                        child: Text(
+                          post.title + '\n',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      flex: 12,
+                    ),
+                  ],
                 ),
-                Text(post.subredditNamePrefixed),
+                feedBodyItemInformation(context, post),
                 Text(post.selftext),
                 Divider(),
                 Row(

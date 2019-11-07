@@ -1,4 +1,5 @@
 import 'package:funer_for_reddit/models/post_models/link_flair_richtext_model.dart';
+import 'package:funer_for_reddit/models/post_models/post_preview_model.dart';
 
 class PostModel {
   dynamic approvedAtUtc;
@@ -76,7 +77,7 @@ class PostModel {
   String name;
   List<Null> awarders;
   bool mediaOnly;
-  //PostsFeedDataChildrenDataPreview preview;
+  PostPreviewModel preview;
   dynamic numReports;
   bool pinned;
   bool hidden;
@@ -180,7 +181,7 @@ class PostModel {
       this.name,
       this.awarders,
       this.mediaOnly,
-      // this.preview,
+      this.preview,
       this.numReports,
       this.pinned,
       this.hidden,
@@ -308,9 +309,9 @@ class PostModel {
     }
     */
       mediaOnly: json['media_only'],
-      //   preview: json['preview'] != null
-      //     ? new PostsFeedDataChildrenDataPreview.fromJson(json['preview'])
-      //   : null;
+      preview: json['preview'] != null
+          ? PostPreviewModel.fromJson(json['preview'])
+          : null,
       numReports: json['num_reports'],
       pinned: json['pinned'],
       hidden: json['hidden'],
@@ -357,5 +358,25 @@ class PostModel {
     return values.map((v) {
       return PostModel.fromJson(v);
     }).toList();
+  }
+
+  static PostPreviewImageSource getPreviewImageSource(PostModel post) {
+    if (post == null || post.preview == null || post.preview.images == null)
+      return null;
+    return post.preview.images.first.source;
+  }
+
+  static bool hasVideo(PostModel post) {
+    return getPostVideo(post) != null;
+  }
+
+  static getPostVideo(PostModel post) {
+    if (post.media != null && post.media['reddit_video'] != null)
+      return post.media['reddit_video'];
+    if (post.crossParent != null &&
+        post.crossParent.media != null &&
+        post.crossParent.media['reddit_video'] != null)
+      return post.crossParent.media['reddit_video'];
+    return null;
   }
 }
