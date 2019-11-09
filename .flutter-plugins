@@ -1,7 +1,7 @@
-flutter_secure_storage=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_secure_storage-3.3.1+1\\
-flutter_webview_plugin=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_webview_plugin-0.3.8\\
-path_provider=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-1.4.0\\
-screen=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\screen-0.0.5\\
-share=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\share-0.6.3+1\\
-sqflite=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\sqflite-1.1.7+1\\
-video_player=C:\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\video_player-0.10.2+5\\
+flutter_secure_storage=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_secure_storage-3.3.1+1/
+flutter_webview_plugin=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.8/
+path_provider=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.4.0/
+screen=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5/
+share=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.6.3+1/
+sqflite=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.1.7+1/
+video_player=/home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.2+5/

@@ -17,6 +17,8 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var post = widget.post;
@@ -43,6 +45,56 @@ class _PostPageState extends State<PostPage> {
               onPressed: () => print("setting"),
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          autofocus: true,
+          isExtended: true,
+          child: Icon(Icons.add),
+          mini: true,
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Flexible(
+                          child: Container(
+                            height: 200,
+                            width: 250,
+                            padding: EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              //TODO : add controller
+                              keyboardType: TextInputType.multiline,
+                              maxLines: null,
+                              minLines: 10,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RaisedButton(
+                            child: Text("Post"),
+                            onPressed: () {
+                              // TODO get text from controller here and put it into method
+                              Provider.of<CommentsProvider>(context)
+                                  .postComment("comment here", post.name);
+                              if (_formKey.currentState.validate()) {
+                                _formKey.currentState.save();
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
         ),
         body: Center(
           child: Container(

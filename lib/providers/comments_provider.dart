@@ -51,6 +51,29 @@ class CommentsProvider with ChangeNotifier {
     this.stopLoading();
   }
 
+  Future<bool> postComment(String comment, String fullname) async {
+    if (!this.storage.signInStatus) {
+      // not logged in, cannot comment
+      // TODO : show error message !
+      return false;
+    }
+    String url = urlBuilder("api/comment");
+    String access = await storage.accessToken;
+    dynamic body = "thing_id=$fullname&api_type=json&text=$comment";
+
+    var response =
+        await buildRequestAndPost(url, body: body, accessToken: access);
+
+    if (response.statusCode != 200) {
+      print("here");
+      // TODO : handle error message
+      return false;
+    }
+
+    print("success when posting comment ! ");
+    return true;
+  }
+
   loading() {
     _isLoading = true;
     notifyListeners();
