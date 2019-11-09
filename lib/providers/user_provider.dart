@@ -30,6 +30,12 @@ class UserProvider with ChangeNotifier {
     return this.subreddits;
   }
 
+  SubredditModel currentSubreddit(String sub) {
+    return this
+        .subscribedSubReddits
+        .firstWhere((val) => val.displayName == sub, orElse: null);
+  }
+
   bool get isMissingData {
     return user == null ||
         user.iconImg == null ||

@@ -1,3 +1,5 @@
+import 'banner_size_model.dart';
+
 class SubredditModel {
   final Object userFlairBackgroundColor;
   final Object submitTextHtml;
@@ -85,7 +87,7 @@ class SubredditModel {
   final String whitelistStatus;
   final String url;
   final double createdUtc;
-  final Object bannerSize;
+  final BannerSize bannerSize;
   final String mobileBannerImage;
   final bool userIsContributor;
 
@@ -270,7 +272,7 @@ class SubredditModel {
       whitelistStatus: json["whitelist_status"],
       url: json["url"],
       createdUtc: json["created_utc"],
-      bannerSize: json["banner_size"],
+      bannerSize: BannerSize.fromJson(json["banner_size"]),
       mobileBannerImage: json["mobile_banner_image"],
       userIsContributor: json["user_is_contributor"],
     );

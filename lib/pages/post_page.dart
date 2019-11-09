@@ -67,7 +67,7 @@ class _PostPageState extends State<PostPage> {
                             width: 250,
                             padding: EdgeInsets.all(8.0),
                             child: TextFormField(
-                              //TODO : add controller
+                              //todo : add controller
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               minLines: 10,
@@ -79,7 +79,7 @@ class _PostPageState extends State<PostPage> {
                           child: RaisedButton(
                             child: Text("Post"),
                             onPressed: () {
-                              // TODO get text from controller here and put it into method
+                              // todo get text from controller here and put it into method
                               Provider.of<CommentsProvider>(context)
                                   .postComment("comment here", post.name);
                               if (_formKey.currentState.validate()) {

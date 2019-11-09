@@ -54,7 +54,7 @@ class CommentsProvider with ChangeNotifier {
   Future<bool> postComment(String comment, String fullname) async {
     if (!this.storage.signInStatus) {
       // not logged in, cannot comment
-      // TODO : show error message !
+      // todo : show error message !
       return false;
     }
     String url = urlBuilder("api/comment");
@@ -66,7 +66,7 @@ class CommentsProvider with ChangeNotifier {
 
     if (response.statusCode != 200) {
       print("here");
-      // TODO : handle error message
+      // todo : handle error message
       return false;
     }
 
