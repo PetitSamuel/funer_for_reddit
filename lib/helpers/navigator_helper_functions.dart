@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
  * Helper functions for navigator management.
 */
 pushPostPage(BuildContext context, PostModel post) {
+  Provider.of<CommentsProvider>(context).setSorting("best");
   Provider.of<CommentsProvider>(context)
       .fetchComments(post.subredditNamePrefixed, post.id);
   Navigator.push(

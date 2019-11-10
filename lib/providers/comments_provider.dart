@@ -9,11 +9,9 @@ import 'package:funer_for_reddit/shared/requests_shared.dart';
 
 class CommentsProvider with ChangeNotifier {
   bool _isLoading = false;
-  String subreddit = "";
-  String postId = "";
   String after = "";
   List<CommentModel> comments;
-
+  String sort;
   CommentsProvider();
 
   final SecureStorageShared storage = new SecureStorageShared();
@@ -21,24 +19,27 @@ class CommentsProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get hasComments => comments == null || comments.length > 0;
 
-  setPostId(String s) {
-    this.postId = s;
-  }
-
   clearComments() {
-    this.postId = "";
-    this.subreddit = "";
     this.after = "";
     this.comments = new List();
   }
 
-  Future<void> fetchComments(String sub, String article) async {
+  setSorting(String sort) {
+    this.sort = sort;
+  }
+
+  Future<void> fetchComments(String sub, String article,
+      {String sort = ""}) async {
+    clearComments();
+    if (sort != "") {
+      this.sort = sort;
+    }
     loading();
     if (sub.isEmpty ?? false || article.isEmpty ?? false) {
       return null;
     }
 
-    String url = urlBuilder("$sub/comments/$article.json");
+    String url = urlBuilder("$sub/comments/$article.json?sort=${this.sort}");
     String access = await this.storage.accessToken;
     var response = await buildRequestAndGet(url, accessToken: access);
 

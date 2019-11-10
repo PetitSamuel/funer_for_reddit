@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/widgets/comments/comments_tree_widget.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_item_information_widget.dart';
+import 'package:funer_for_reddit/widgets/popup_buttons/sort_options_comments.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key key, this.post}) : super(key: key);
@@ -17,6 +20,8 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  String get commentSort => Provider.of<CommentsProvider>(context).sort;
+
   final _formKey = GlobalKey<FormState>();
   final _textController = TextEditingController();
 
@@ -30,16 +35,19 @@ class _PostPageState extends State<PostPage> {
           title: Text('Comments'),
           actions: <Widget>[
             Container(
-              child: Center(child: Text("sorting")),
+              child: Center(child: Text(this.commentSort)),
               margin: EdgeInsets.only(right: 12),
             ),
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () => print("search"),
             ),
-            IconButton(
-              icon: Icon(Icons.sort),
-              onPressed: () => print("sort"),
+            PopupMenuButton(
+              child: Icon(Icons.sort),
+              itemBuilder: (BuildContext context) {
+                return sortOptionsCommentsPopupMenu(context, this.commentSort);
+              },
+              onSelected: (String sort) => updateCommentSort(sort),
             ),
             IconButton(
               icon: Icon(Icons.settings),
@@ -63,6 +71,7 @@ class _PostPageState extends State<PostPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        Text("Post a comment!"),
                         Flexible(
                           child: Container(
                             height: 200,
@@ -78,6 +87,8 @@ class _PostPageState extends State<PostPage> {
                           ),
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -154,24 +165,31 @@ class _PostPageState extends State<PostPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     IconButton(
+                      color: post.likes == true
+                          ? Colors.orangeAccent
+                          : Colors.white,
                       icon: Icon(Icons.arrow_upward),
-                      onPressed: () => print("upvote"),
+                      onPressed: () {
+                        Provider.of<FeedProvider>(context)
+                            .votePost(post.name, "up", post.likes);
+                      },
                     ),
                     IconButton(
                       icon: Icon(Icons.arrow_downward),
-                      onPressed: () => print("downward"),
+                      color: post.likes == false ? Colors.blue : Colors.white,
+                      onPressed: () {
+                        Provider.of<FeedProvider>(context)
+                            .votePost(post.name, "down", post.likes);
+                      },
                     ),
                     IconButton(
                       icon: Icon(Icons.star),
                       onPressed: () => print("starred"),
                     ),
                     IconButton(
-                      icon: Icon(Icons.comment),
-                      onPressed: () => print("comments"),
-                    ),
-                    IconButton(
                       icon: Icon(Icons.share),
-                      onPressed: () => print("share"),
+                      onPressed: () async =>
+                          await Share.share('www.reddit.com${post.permalink}'),
                     ),
                   ],
                 ),
@@ -188,5 +206,14 @@ class _PostPageState extends State<PostPage> {
         ),
       ),
     );
+  }
+
+  updateCommentSort(String sort) {
+    if (this.commentSort == sort) return;
+    //post.subredditNamePrefixed, post.id
+    String subredditName = widget.post.subredditNamePrefixed;
+    String postId = widget.post.id;
+    Provider.of<CommentsProvider>(context)
+        .fetchComments(subredditName, postId, sort: sort);
   }
 }
