@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print("reload");
+        print("load more posts");
         Provider.of<FeedProvider>(context).fetchPostsListing();
       }
     });
@@ -52,13 +52,14 @@ class _HomePageState extends State<HomePage> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  // todo: make this scrollable with the list view
                   /*
                   Builder(
                     builder: (context) {
                       SubredditModel sub =
                           this.subredditInformation(this.currentSubredditName);
                       if (sub == null) return Container();
-                      print(sub.bannerSize);
+                      
                       return Container(
                         child: DecoratedBox(
                           child: Column(

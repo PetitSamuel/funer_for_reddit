@@ -105,15 +105,18 @@ class _PostPageState extends State<PostPage> {
                               padding: const EdgeInsets.all(8.0),
                               child: RaisedButton(
                                 child: Text("Post"),
-                                onPressed: () {
+                                onPressed: () async {
                                   String comment = _textController.text.trim();
                                   if (comment.isEmpty) {
                                     // can't post empty
                                     return null;
                                   }
                                   // todo get text from controller here and put it into method
-                                  Provider.of<CommentsProvider>(context)
-                                      .postComment(comment, post.name);
+                                  bool wasPosted =
+                                      await Provider.of<CommentsProvider>(
+                                              context)
+                                          .postComment(comment, post.name);
+                                  if (wasPosted) post.numComments++;
                                   Navigator.pop(context);
                                 },
                               ),

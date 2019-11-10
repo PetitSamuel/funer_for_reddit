@@ -42,6 +42,14 @@ class FeedProvider with ChangeNotifier {
   }
 
   setSubredditAndFetchWithClear(String sub) {
+    if (this.subreddit == sub ||
+        this.subreddit.isNotEmpty &&
+            sub.isNotEmpty &&
+            (this.subreddit.contains(sub) || sub.contains(this.subreddit))) {
+      // todo : show why not changing the feed & staying on current view
+      print("staying");
+      return;
+    }
     this.subreddit = sub;
     this.clearOnReload = true;
     this.fetchPostsListing();

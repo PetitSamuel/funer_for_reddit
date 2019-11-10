@@ -24,7 +24,8 @@ Widget subredditDrawerBodyItem(BuildContext context, SubredditModel current) {
             ),
           ),
     onTap: () {
-      Provider.of<FeedProvider>(context).fetchPostsListing(sub: current.url);
+      Provider.of<FeedProvider>(context)
+          .setSubredditAndFetchWithClear(current.url);
       Navigator.pop(context);
     },
   );

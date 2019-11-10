@@ -32,6 +32,7 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
             maxLines: 3,
           ),
         feedBodyItemInformation(context, post),
+        // todo : parse media part of answer & use it for gifs displaying
         if (imgsrc != null && !hasVideo)
           Image.network(
             htmlUnescapeConvert(context, imgsrc.url),
@@ -42,6 +43,7 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
             h: video['height'],
             w: video['width'],
           ),
+
         feedBodyItemActions(context, post),
       ],
     ),
