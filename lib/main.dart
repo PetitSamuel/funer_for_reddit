@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
-import 'package:funer_for_reddit/providers/html_text_formatting_provider.dart';
 import 'package:funer_for_reddit/providers/page_information_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +26,6 @@ void main() {
       ),
       ChangeNotifierProvider(
         builder: (_) => CommentsProvider(),
-      ),
-      Provider(
-        builder: (_) => HtmlTextFormattingProvider(),
       ),
       Provider(
         builder: (_) => PageInformationProvider(),

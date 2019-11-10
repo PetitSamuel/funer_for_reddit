@@ -35,7 +35,7 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
         // todo : parse media part of answer & use it for gifs displaying
         if (imgsrc != null && !hasVideo)
           Image.network(
-            htmlUnescapeConvert(context, imgsrc.url),
+            htmlUnescapeConvert(imgsrc.url),
           ),
         if (hasVideo)
           VideoPlayerScreen(
