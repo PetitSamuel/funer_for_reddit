@@ -8,11 +8,11 @@ List<PopupMenuEntry<String>> sortOptionsCommentsPopupMenu(
     BuildContext context, String sort) {
   return <PopupMenuEntry<String>>[
     PopupMenuItem<String>(
-      value: 'confidence',
+      value: 'best',
       child: ListTile(
         leading: Icon(Icons.hot_tub),
         title: Text('Best'),
-        enabled: 'confidence' != sort,
+        enabled: 'best' != sort,
       ),
     ),
     const PopupMenuDivider(),

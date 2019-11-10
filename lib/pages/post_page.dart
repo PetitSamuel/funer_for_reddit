@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:funer_for_reddit/helpers/html_convert.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/providers/comments_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/widgets/comments/comments_tree_widget.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_item_information_widget.dart';
 import 'package:funer_for_reddit/widgets/popup_buttons/sort_options_comments.dart';
-import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -141,7 +141,7 @@ class _PostPageState extends State<PostPage> {
                         child: Container(
                           margin: EdgeInsets.only(left: 12, top: 8),
                           child: Image.network(
-                            HtmlUnescape().convert(imgsrc.url),
+                            htmlUnescapeConvert(context, imgsrc.url),
                           ),
                         ),
                         flex: 4,
