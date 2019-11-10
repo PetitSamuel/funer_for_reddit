@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  /*
                   Builder(
                     builder: (context) {
                       SubredditModel sub =
@@ -102,6 +103,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   ),
+                  */
                   feedBody(Provider.of<FeedProvider>(context).posts,
                       _scrollController),
                   if (Provider.of<FeedProvider>(context).isLoading)

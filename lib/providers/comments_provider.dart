@@ -69,8 +69,11 @@ class CommentsProvider with ChangeNotifier {
       // todo : handle error message
       return false;
     }
-
-    print("success when posting comment ! ");
+    var json = jsonDecode(response.body);
+    var newComment =
+        CommentModel.fromJson(json['json']['data']['things'][0]['data']);
+    if (newComment != null) this.comments.add(newComment);
+    this.notifyListeners();
     return true;
   }
 

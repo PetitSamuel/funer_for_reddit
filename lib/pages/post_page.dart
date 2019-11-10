@@ -18,6 +18,7 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   final _formKey = GlobalKey<FormState>();
+  final _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +53,7 @@ class _PostPageState extends State<PostPage> {
           child: Icon(Icons.add),
           mini: true,
           onPressed: () {
+            _textController.clear();
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -68,26 +70,45 @@ class _PostPageState extends State<PostPage> {
                             padding: EdgeInsets.all(8.0),
                             child: TextFormField(
                               //todo : add controller
+                              controller: _textController,
                               keyboardType: TextInputType.multiline,
                               maxLines: null,
                               minLines: 10,
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: RaisedButton(
-                            child: Text("Post"),
-                            onPressed: () {
-                              // todo get text from controller here and put it into method
-                              Provider.of<CommentsProvider>(context)
-                                  .postComment("comment here", post.name);
-                              if (_formKey.currentState.validate()) {
-                                _formKey.currentState.save();
-                              }
-                            },
-                          ),
-                        )
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                color: Colors.grey,
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _textController.clear();
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RaisedButton(
+                                child: Text("Post"),
+                                onPressed: () {
+                                  String comment = _textController.text.trim();
+                                  if (comment.isEmpty) {
+                                    // can't post empty
+                                    return null;
+                                  }
+                                  // todo get text from controller here and put it into method
+                                  Provider.of<CommentsProvider>(context)
+                                      .postComment(comment, post.name);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
