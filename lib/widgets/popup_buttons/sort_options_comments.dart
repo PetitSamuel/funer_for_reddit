@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /*
  *  A Popup menu with buttons.
- *  They are the sorting options for the feed.
+ *  They are the sorting options for the comments.
 */
 List<PopupMenuEntry<String>> sortOptionsCommentsPopupMenu(
     BuildContext context, String sort) {
