@@ -10,3 +10,7 @@ String getTimeAgoAsString(double utc) {
   var diff = now.difference(postedDate);
   return timeago.format(now.subtract(diff));
 }
+
+String getDateAsString() {
+    return DateTime.now().toIso8601String();
+  }
