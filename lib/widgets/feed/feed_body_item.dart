@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/helpers/html_convert.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
-import 'package:funer_for_reddit/helpers/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/helpers/navigator_helper_functions.dart';
 import 'package:funer_for_reddit/models/post_models/post_preview_model.dart';
 import 'package:funer_for_reddit/widgets/feed/feed_body_item_actions_widget.dart';
@@ -17,14 +16,47 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
     onTap: () {
       pushPostPage(context, post);
     },
-    title: Text(post.author +
-        " - " +
-        post.title +
-        ' - (' +
-        getTimeAgoAsString(post.created) +
-        ').'),
+    title: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Flexible(
+          child: FlatButton(
+            child: Text(post.subredditNamePrefixed),
+            onPressed: () => print("cool"),
+            /*
+onPressed: () {
+              if (Provider.of<PageInformationProvider>(context).isOnPostPage)
+                Navigator.pop(context);
+              Provider.of<FeedProvider>(context).setSubredditAndFetchWithClear(
+                  post.subredditNamePrefixed + "/");
+            },
+            */
+          ),
+        ),
+        Text("·"),
+        Flexible(
+          child: FlatButton(
+            child: Text("u/" + post.author),
+            onPressed: () => print("cool"),
+            /*
+onPressed: () {
+              if (Provider.of<PageInformationProvider>(context).isOnPostPage)
+                Navigator.pop(context);
+              Provider.of<FeedProvider>(context).setSubredditAndFetchWithClear(
+                  post.subredditNamePrefixed + "/");
+            },
+            */
+          ),
+        ),
+      ],
+    ),
     subtitle: Column(
       children: <Widget>[
+        Text(
+          post.title + "\n",
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
         if (post.selftext.length != 0)
           Text(
             post.selftext,

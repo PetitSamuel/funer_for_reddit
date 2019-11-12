@@ -31,7 +31,7 @@ class FeedProvider with ChangeNotifier {
   bool get showTimeOption => this.sort == 'top' || this.sort == 'controversial';
 
   setSort(String s) {
-    this.sort = s;
+    this.sort = s.toLowerCase();
     this.clearOnReload = true;
     if (this.sort == 'top' || this.sort == 'controversial') {
       this.timeframe = "day";
@@ -101,7 +101,6 @@ class FeedProvider with ChangeNotifier {
       this.subreddit = sub.toLowerCase();
       this.clearOnReload = true;
     }
-    this.sort = sort.toLowerCase();
 
     if (this.clearOnReload) {
       this.clearOnReload = false;

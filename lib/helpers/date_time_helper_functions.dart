@@ -8,5 +8,5 @@ String getTimeAgoAsString(double utc) {
       new DateTime.fromMillisecondsSinceEpoch(utc.round() * 1000, isUtc: false);
   var now = new DateTime.now();
   var diff = now.difference(postedDate);
-  return timeago.format(now.subtract(diff));
+  return timeago.format(now.subtract(diff), locale: 'en_short');
 }
