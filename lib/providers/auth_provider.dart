@@ -3,43 +3,32 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:funer_for_reddit/authentification/auth_webview.dart';
-import 'package:funer_for_reddit/shared/secure_storage_shared.dart';
-import 'package:funer_for_reddit/providers/user_provider.dart';
-import 'package:funer_for_reddit/secret/secret.dart';
 import 'package:funer_for_reddit/authentification/local_server.dart';
+import 'package:funer_for_reddit/secret/secret.dart';
 import 'package:funer_for_reddit/shared/requests_shared.dart';
-import 'package:provider/provider.dart';
 
-class AuthentificatorProvider with ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   bool _signedIn = false;
   bool _isLoading = false;
-  String _accessToken;
-  String _refreshToken;
 
-  AuthentificatorProvider() {
+  bool get signedIn => _signedIn;
+  bool get loading => _isLoading;
+
+  AuthProvider() {
     validateAuth();
   }
 
-  final SecureStorageShared storage = new SecureStorageShared();
-
-  bool get signedIn => storage.signInStatus;
-  bool get isLoading => _isLoading;
 
   Future<bool> validateAuth() async {
-    loading();
-    await storage.init();
-    if (storage.signInStatus) {
-      performTokenRefresh();
-    }
-
+    startLoading();
+   // todo : handle this when storing tokens.
     stopLoading();
-    return storage.signInStatus;
+    return true;
   }
 
   Future<bool> authenticateUser(BuildContext context) async {
-    loading();
+    startLoading();
     // listen to localhost requests
     final LocalServer localServer = LocalServer();
     Stream<String> codeStream = await localServer.server();
@@ -71,45 +60,36 @@ class AuthentificatorProvider with ChangeNotifier {
     Navigator.pop(context);
     if (response.statusCode != 200) {
       // todo: show error message
+      print("error m8");
       _signedIn = false;
       stopLoading();
       return false;
     }
 
     Map<String, dynamic> map = json.decode(response.body);
-    _accessToken = map['access_token'];
-    _refreshToken = map["refresh_token"];
-
-    if ((_accessToken ?? "").isEmpty || (_refreshToken ?? "").isEmpty) {
+    String accessToken = map['access_token'];
+    String refreshToken = map["refresh_token"];
+    print(accessToken);
+    print(refreshToken);
+    if ((accessToken ?? "").isEmpty || (refreshToken ?? "").isEmpty) {
       // todo: show error message
       _signedIn = false;
       stopLoading();
       return false;
     }
-
     _signedIn = true;
-    await storage.updateCredentials(_accessToken, _refreshToken, _signedIn);
+    // todo : store tokens somehow
     stopLoading();
-    Provider.of<UserProvider>(context).loadUserInformation();
     return _signedIn;
   }
 
-  Future<void> performTokenRefresh() async {
-    loading();
-    await storage.performTokenRefresh();
+  signout() {
+    startLoading();
+    this._signedIn = false;
     stopLoading();
   }
 
-  Future<void> signOutUser() async {
-    print("signing out!!");
-    loading();
-    // delete: authToken, refreshToken, signedIn, lastTokenRefresh
-    await storage.clearStorage();
-    _signedIn = false;
-    stopLoading();
-  }
-
-  loading() {
+  startLoading() {
     _isLoading = true;
     notifyListeners();
   }
