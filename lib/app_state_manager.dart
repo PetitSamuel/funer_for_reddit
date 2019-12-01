@@ -12,7 +12,7 @@ login(BuildContext context) async {
       await Provider.of<AuthProvider>(context).authenticateUser(context);
   // todo : if success then load user info
   if (!status) return;
-  String token = Provider.of<AuthProvider>(context).accessToken;
+  String token = await getAccessToken(context);
   Provider.of<UserProvider>(context).handleGetMe(token);
   Provider.of<UserProvider>(context).getUserSubreddits(token);
 }
@@ -22,8 +22,8 @@ signout(BuildContext context) {
   Provider.of<UserProvider>(context).clearStorage();
 }
 
-loadUserProfile(BuildContext context) {
-  String token = getAccessToken(context);
+loadUserProfile(BuildContext context) async {
+  String token = await getAccessToken(context);
   if (token == null || token.isEmpty) {
     print("access token is empty, abort loading user profile");
     return;
@@ -32,8 +32,18 @@ loadUserProfile(BuildContext context) {
   Provider.of<UserProvider>(context).handleGetMe(token);
 }
 
-String getAccessToken(BuildContext context) {
-  return Provider.of<AuthProvider>(context).accessToken;
+loadUserSubs(BuildContext context) async {
+  String token = await getAccessToken(context);
+  if (token == null || token.isEmpty) {
+    print("access token is empty, abort loading user subs");
+    return;
+  }
+  print("loading user subs");
+  Provider.of<UserProvider>(context).handleGetUserSubreddits(token);
+}
+
+Future<String> getAccessToken(BuildContext context) async {
+  return await Provider.of<AuthProvider>(context).accessToken;
 }
 
 bool isAuthLoading(BuildContext context) {

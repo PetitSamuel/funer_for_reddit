@@ -17,9 +17,9 @@ class DrawerBodyLoggedIn extends StatelessWidget {
       return Container(
         child: ListTile(
           leading: Icon(Icons.refresh),
-          title: Text("Error when loading user profile."),
+          title: Text("Error when loading subreddits"),
           subtitle: Text("Click to try again"),
-          onTap: () => loadUserProfile(context),
+          onTap: () => loadUserSubs(context),
         ),
       );
     }

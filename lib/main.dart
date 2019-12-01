@@ -87,7 +87,24 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          children: <Widget>[
+            /*
+            testing stuff : 
+            FlatButton(
+              child: Text("test refresh token"),
+              onPressed: () async {
+                print(Provider.of<AuthProvider>(context).refreshToken);
+                print(await Provider.of<AuthProvider>(context).accessToken);
+                print(Provider.of<AuthProvider>(context).lastTokenRefresh);
+                print(Provider.of<AuthProvider>(context).signedIn);
+                print(Provider.of<AuthProvider>(context).needsTokenRefresh());
+                await Provider.of<AuthProvider>(context).performTokenRefresh();
+                print(await Provider.of<AuthProvider>(context).accessToken);
+                print(Provider.of<AuthProvider>(context).lastTokenRefresh);
+              },
+            )
+            */
+          ],
         ),
       ),
     );
