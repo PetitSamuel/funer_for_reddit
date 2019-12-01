@@ -11,18 +11,21 @@ import 'package:funer_for_reddit/shared/requests_shared.dart';
 class AuthProvider with ChangeNotifier {
   bool _signedIn = false;
   bool _isLoading = false;
+  String _accessToken = "";
+  String _refreshToken = "";
 
   bool get signedIn => _signedIn;
   bool get loading => _isLoading;
+  String get accessToken => _accessToken;
+  String get refreshToken => _refreshToken;
 
   AuthProvider() {
     validateAuth();
   }
 
-
   Future<bool> validateAuth() async {
     startLoading();
-   // todo : handle this when storing tokens.
+    // todo : handle this when storing tokens.
     stopLoading();
     return true;
   }
@@ -67,11 +70,9 @@ class AuthProvider with ChangeNotifier {
     }
 
     Map<String, dynamic> map = json.decode(response.body);
-    String accessToken = map['access_token'];
-    String refreshToken = map["refresh_token"];
-    print(accessToken);
-    print(refreshToken);
-    if ((accessToken ?? "").isEmpty || (refreshToken ?? "").isEmpty) {
+    this._accessToken = map['access_token'];
+    this._refreshToken = map["refresh_token"];
+    if ((_accessToken ?? "").isEmpty || (_refreshToken ?? "").isEmpty) {
       // todo: show error message
       _signedIn = false;
       stopLoading();

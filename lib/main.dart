@@ -1,9 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
 import 'package:funer_for_reddit/network/http_client_overrides.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
+import 'package:funer_for_reddit/widgets/drawer_body_logged_in.dart';
+import 'package:funer_for_reddit/widgets/drawer_header_logged_in.dart';
 import 'package:provider/provider.dart';
 
 import 'app_state_manager.dart';
@@ -22,7 +26,6 @@ void main() {
     child: MyApp(),
   ));
 }
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -47,31 +50,38 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool get hasSubs => Provider.of<UserProvider>(context).hasSubs;
+  bool get hasUser => Provider.of<UserProvider>(context).hasUser;
+
+  UserInformationModel get user => Provider.of<UserProvider>(context).user;
+  List<SubredditModel> get subs =>
+      Provider.of<UserProvider>(context).subreddits;
+
   @override
   Widget build(BuildContext context) {
+    bool signedIn = loggedIn(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
+        child: ListView(shrinkWrap: true, children: <Widget>[
           DrawerHeader(
-            child: 
-                loggedIn(context) ? 
+            child: signedIn
+                ?
                 // show logged in widget
-                ListTile(
-                  title: Text("welcome."),
-                  onTap: () => signout(context),
-                ) :
+                DrawerHeaderLoggedIn()
+                :
                 // show log in button
                 ListTile(
-                  leading: isAuthLoading(context) ? CircularProgressIndicator() : Icon(Icons.account_circle),
-                  title: Text("log in mate."),
-                  onTap: () => login(context),
-                ),
-              
+                    leading: isAuthLoading(context)
+                        ? CircularProgressIndicator()
+                        : Icon(Icons.account_circle),
+                    title: Text("log in mate."),
+                    onTap: () => login(context),
+                  ),
           ),
+          if (signedIn) DrawerBodyLoggedIn()
         ]),
       ),
       body: Center(

@@ -2,6 +2,8 @@ package io.flutter.plugins;
 
 import io.flutter.plugin.common.PluginRegistry;
 import com.flutter_webview_plugin.FlutterWebviewPlugin;
+import io.flutter.plugins.pathprovider.PathProviderPlugin;
+import com.tekartik.sqflite.SqflitePlugin;
 
 /**
  * Generated file. Do not edit.
@@ -12,6 +14,8 @@ public final class GeneratedPluginRegistrant {
       return;
     }
     FlutterWebviewPlugin.registerWith(registry.registrarFor("com.flutter_webview_plugin.FlutterWebviewPlugin"));
+    PathProviderPlugin.registerWith(registry.registrarFor("io.flutter.plugins.pathprovider.PathProviderPlugin"));
+    SqflitePlugin.registerWith(registry.registrarFor("com.tekartik.sqflite.SqflitePlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {
