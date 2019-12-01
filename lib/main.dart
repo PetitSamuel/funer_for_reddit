@@ -32,11 +32,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Funer for Reddit',
+      theme: ThemeData.dark(),
+      home: MyHomePage(title: 'Funer for Reddit'),
     );
   }
 }

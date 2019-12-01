@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:funer_for_reddit/authentification/auth_webview.dart';
 import 'package:funer_for_reddit/authentification/local_server.dart';
@@ -118,12 +119,18 @@ class AuthProvider with ChangeNotifier {
 
   Future<bool> authenticateUser(BuildContext context) async {
     startLoading();
+
+    // generate unique id to make sure the right person logs in.
+    String uuid = Uuid().v1();
+    print(uuid);
+
     // listen to localhost requests
     final LocalServer localServer = LocalServer();
     Stream<String> codeStream = await localServer.server();
 
+    // todo : double check code here!
     final String webviewUrl = authUrlBuilder(
-        "authorize.compact?client_id=$CLIENT_ID&response_type=code&state=GENERATESOMETHINGHERE&redirect_uri=$REDIRECT_URL&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread");
+        "authorize.compact?client_id=$CLIENT_ID&response_type=code&state=$uuid&redirect_uri=$REDIRECT_URL&duration=permanent&scope=identity,edit,flair,history,modconfig,modflair,modlog,modposts,modwiki,mysubreddits,privatemessages,read,report,save,submit,subscribe,vote,wikiedit,wikiread");
 
     // launch webview
     Navigator.push(
@@ -132,12 +139,20 @@ class AuthProvider with ChangeNotifier {
           builder: (context) => AuthWebview(url: webviewUrl),
         ));
 
-    // server returns the first access_code it receives
-    final String accessCode = await codeStream.first ?? "";
+    // server returns the first access & state code it receives
+    final stream = await codeStream.toList() ?? [];
+    String accessCode = stream[0] ?? "";
+    String state = stream[1] ?? "";
 
     // todo: show an error message here
-    // error during login (no access code provided).
-    if (accessCode.isEmpty) return false;
+    // error during login (no access/state code provided).
+    if (accessCode.isEmpty || state.isEmpty) return false;
+
+    // uuids do not match (potential attack: do not log in)
+    if (state != uuid) {
+      print("uuid does not match!");
+      return false;
+    }
 
     String url = authUrlBuilder("/access_token");
     dynamic body =
@@ -149,7 +164,7 @@ class AuthProvider with ChangeNotifier {
     Navigator.pop(context);
     if (response.statusCode != 200) {
       // todo: show error message
-      print("error m8");
+      print("error when logging in : status code not 200");
       _signedIn = false;
       stopLoading();
       return false;

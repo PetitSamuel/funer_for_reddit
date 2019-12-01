@@ -2,6 +2,9 @@ import 'dart:io';
 import 'dart:async';
 
 class LocalServer {
+  final String code;
+
+  LocalServer({this.code});
   // listen to local host requests & return a stream containing the access code.
   Future<Stream<String>> server() async {
     final StreamController<String> onCode = new StreamController();
@@ -9,9 +12,11 @@ class LocalServer {
         await HttpServer.bind(InternetAddress.loopbackIPv4, 8080, shared: true);
     server.listen((HttpRequest request) async {
       final String code = request.uri.queryParameters["code"];
-      onCode.add(code);
+      final String state = request.uri.queryParameters["state"];
 
-      print(request.uri.pathSegments);
+      onCode.add(code);
+      onCode.add(state);
+
       request.response
         ..statusCode = 200
         ..headers.set("Content-Type", ContentType.html.mimeType)
