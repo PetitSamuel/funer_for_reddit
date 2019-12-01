@@ -53,7 +53,6 @@ class AuthProvider with ChangeNotifier {
       return true;
     }
     Duration time = (DateTime.now()).difference(DateTime.parse(lastRefresh));
-    print(time.toString());
     return time.inMinutes > 50;
   }
 

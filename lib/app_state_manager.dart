@@ -7,6 +7,12 @@ bool loggedIn(BuildContext context) {
   return Provider.of<AuthProvider>(context).signedIn;
 }
 
+onStartup(BuildContext context) async {
+  // methods executed to automatically load user info on app load.
+  loadUserProfile(context);
+  loadUserSubs(context);
+}
+
 login(BuildContext context) async {
   bool status =
       await Provider.of<AuthProvider>(context).authenticateUser(context);
@@ -28,7 +34,6 @@ loadUserProfile(BuildContext context) async {
     print("access token is empty, abort loading user profile");
     return;
   }
-  print("loading user profiles");
   Provider.of<UserProvider>(context).handleGetMe(token);
 }
 
@@ -38,7 +43,6 @@ loadUserSubs(BuildContext context) async {
     print("access token is empty, abort loading user subs");
     return;
   }
-  print("loading user subs");
   Provider.of<UserProvider>(context).handleGetUserSubreddits(token);
 }
 

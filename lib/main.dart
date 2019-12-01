@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
+
   final String title;
 
   @override
@@ -51,6 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
   bool get hasSubs => Provider.of<UserProvider>(context).hasSubs;
   bool get hasUser => Provider.of<UserProvider>(context).hasUser;
 
+  bool firstLoad = true;
+
   UserInformationModel get user => Provider.of<UserProvider>(context).user;
   List<SubredditModel> get subs =>
       Provider.of<UserProvider>(context).subreddits;
@@ -58,6 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     bool signedIn = loggedIn(context);
+    if (this.firstLoad && signedIn) {
+      // load user info on first load when signed in.
+      onStartup(context);
+      this.firstLoad = false;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -76,7 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         ? CircularProgressIndicator()
                         : Icon(Icons.account_circle),
                     title: Text("log in mate."),
-                    onTap: () => login(context),
+                    onTap: () {
+                      this.firstLoad = false;
+                      login(context);
+                    },
                   ),
           ),
           if (signedIn) DrawerBodyLoggedIn()

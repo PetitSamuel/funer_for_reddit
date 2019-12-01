@@ -46,7 +46,6 @@ class UserProvider with ChangeNotifier {
       return;
     }
     user = UserInformationModel.fromJson(json.decode(response.body));
-    print("loaded user profiles");
     _isLoadingUser = false;
     notifyListeners();
   }
@@ -55,7 +54,6 @@ class UserProvider with ChangeNotifier {
   Future<void> getUserSubreddits(String accessToken) async {
     await handleGetUserSubreddits(accessToken);
     while (this.after != "") {
-      print(this.after);
       await handleGetUserSubreddits(accessToken);
     }
   }
