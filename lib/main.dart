@@ -5,9 +5,11 @@ import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_mo
 import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
 import 'package:funer_for_reddit/network/http_client_overrides.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/widgets/drawer_body_logged_in.dart';
 import 'package:funer_for_reddit/widgets/drawer_header_logged_in.dart';
+import 'package:funer_for_reddit/widgets/feed_body.dart';
 import 'package:provider/provider.dart';
 
 import 'app_state_manager.dart';
@@ -21,6 +23,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => UserProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => FeedProvider(),
       ),
     ],
     child: MyApp(),
@@ -93,28 +98,10 @@ class _MyHomePageState extends State<MyHomePage> {
           if (signedIn) DrawerBodyLoggedIn()
         ]),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            /*
-            testing stuff : 
-            FlatButton(
-              child: Text("test refresh token"),
-              onPressed: () async {
-                print(Provider.of<AuthProvider>(context).refreshToken);
-                print(await Provider.of<AuthProvider>(context).accessToken);
-                print(Provider.of<AuthProvider>(context).lastTokenRefresh);
-                print(Provider.of<AuthProvider>(context).signedIn);
-                print(Provider.of<AuthProvider>(context).needsTokenRefresh());
-                await Provider.of<AuthProvider>(context).performTokenRefresh();
-                print(await Provider.of<AuthProvider>(context).accessToken);
-                print(Provider.of<AuthProvider>(context).lastTokenRefresh);
-              },
-            )
-            */
-          ],
-        ),
+      body: ListView(
+        children: <Widget>[
+          FeedBody(),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
+import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +10,14 @@ bool loggedIn(BuildContext context) {
 
 onStartup(BuildContext context) async {
   // methods executed to automatically load user info on app load.
-  loadUserProfile(context);
-  loadUserSubs(context);
+  String token = await getAccessToken(context);
+  Provider.of<FeedProvider>(context).fetchPostsListing("", accessToken: token);
+  if (token == null || token.isEmpty) {
+    print("access token is empty, abort loading user profile/subs");
+    return;
+  }
+  Provider.of<UserProvider>(context).handleGetMe(token);
+  Provider.of<UserProvider>(context).handleGetUserSubreddits(token);
 }
 
 login(BuildContext context) async {
@@ -21,6 +28,7 @@ login(BuildContext context) async {
   String token = await getAccessToken(context);
   Provider.of<UserProvider>(context).handleGetMe(token);
   Provider.of<UserProvider>(context).getUserSubreddits(token);
+  Provider.of<FeedProvider>(context).fetchPostsListing("", accessToken: token);
 }
 
 signout(BuildContext context) {
@@ -44,6 +52,11 @@ loadUserSubs(BuildContext context) async {
     return;
   }
   Provider.of<UserProvider>(context).handleGetUserSubreddits(token);
+}
+
+loadPosts(BuildContext context) async {
+  String token = await getAccessToken(context);
+  Provider.of<FeedProvider>(context).fetchPostsListing("", accessToken: token);
 }
 
 Future<String> getAccessToken(BuildContext context) async {

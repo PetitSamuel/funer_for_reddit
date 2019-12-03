@@ -24,6 +24,10 @@ class AuthProvider with ChangeNotifier {
     return (map['signed_in'] ?? "") == "true";
   }
 
+  Future<bool> get signedInAsync async {
+    return (await this.storage.read(key: 'signed_in') ?? "") == "true";
+  }
+
   Future<String> get accessToken async {
     if (needsTokenRefresh() && signedIn) {
       await performTokenRefresh();
