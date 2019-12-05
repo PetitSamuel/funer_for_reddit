@@ -43,6 +43,7 @@ class FeedProvider with ChangeNotifier {
     print(this.timeframe);
     String url = urlBuilder("${this.subreddit}" +
         "${this.sort}/?limit=50&after=${this.after}&t=${this.timeframe}");
+    print(url);
     var response = await buildRequestAndGet(url, accessToken: token);
     if (response.statusCode != 200) {
       // error occured, return null
@@ -68,8 +69,9 @@ class FeedProvider with ChangeNotifier {
     startLoading();
     this.subreddit = sub.toLowerCase();
     this.posts.clear();
+    this.after = "";
 
-    Map<String, dynamic> response = accessToken.isEmpty
+    Map<String, dynamic> response = accessToken.isNotEmpty
         ? await loadSignedInPosts(accessToken)
         : await loadUnauthentificatedPosts();
 

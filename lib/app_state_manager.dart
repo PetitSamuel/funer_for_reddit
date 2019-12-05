@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/pages/post_page.dart';
+import 'package:funer_for_reddit/pages/subreddit_page.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
@@ -65,4 +69,33 @@ Future<String> getAccessToken(BuildContext context) async {
 
 bool isAuthLoading(BuildContext context) {
   return Provider.of<AuthProvider>(context).loading;
+}
+
+pushSubredditPage(BuildContext context, String subreddit) async {
+  String currentSub = Provider.of<FeedProvider>(context).subreddit;
+  if (currentSub == subreddit.toLowerCase()) {
+    print("not pushing !");
+    return;
+  }
+  String token = await getAccessToken(context);
+  Provider.of<FeedProvider>(context)
+      .fetchPostsListing(subreddit, accessToken: token);
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SubredditPage(subreddit: subreddit),
+      )).then((value) async {
+    String token = await getAccessToken(context);
+    Provider.of<FeedProvider>(context)
+        .fetchPostsListing("", accessToken: token);
+  });
+}
+
+pushPostPage(BuildContext context, PostModel post) async {
+  // todo : fetch comments
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostPage(post: post),
+      ));
 }

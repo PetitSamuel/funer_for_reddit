@@ -20,7 +20,7 @@ class UserProvider with ChangeNotifier {
   bool get hasUser => user != null;
   bool get hasSubs => subreddits != null && subreddits.length != 0;
 
-  UserProvider() {}
+  UserProvider();
 
   clearStorage() {
     this.subreddits = new List();
@@ -64,8 +64,6 @@ class UserProvider with ChangeNotifier {
     }
     _isLoadingSubs = true;
     notifyListeners();
-    // todo : handle more than 100 subs.
-
     if (accessToken == null || accessToken.isEmpty) {
       //todo : log this
       print("get user subreddits given empty access token");
