@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/app_state_manager.dart';
 import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
 
 /*
@@ -34,7 +35,7 @@ Widget subredditDrawerBodyItem(BuildContext context, SubredditModel current) {
           ),
     onTap: () {
       // todo : handle tap
-      print(current.url);
+      pushSubredditPage(context, current.displayNamePrefixed + "/");
       /*
       Provider.of<FeedProvider>(context)
           .setSubredditAndFetchWithClear(current.url);

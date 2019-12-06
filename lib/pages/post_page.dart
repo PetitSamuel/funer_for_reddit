@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/providers/comment_provider.dart';
+import 'package:funer_for_reddit/widgets/comment_tree.dart';
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class PostPage extends StatefulWidget {
@@ -20,6 +23,8 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
+    var coms = Provider.of<CommentProvider>(context).comments;
+    if (coms != null) print(coms.length);
     var post = widget.post;
     var imgsrc = PostModel.getPreviewImageSource(post);
     return SafeArea(
@@ -204,6 +209,7 @@ class _PostPageState extends State<PostPage> {
                       context, Provider.of<CommentsProvider>(context).comments),
 
                       */
+                CommentTree(post),
               ],
             ),
           ),

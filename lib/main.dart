@@ -5,6 +5,7 @@ import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_mo
 import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
 import 'package:funer_for_reddit/network/http_client_overrides.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
+import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/widgets/drawer_body_logged_in.dart';
@@ -26,6 +27,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => FeedProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CommentProvider(),
       ),
     ],
     child: MyApp(),

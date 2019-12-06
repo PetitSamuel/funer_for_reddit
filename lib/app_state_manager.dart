@@ -4,6 +4,7 @@ import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/pages/post_page.dart';
 import 'package:funer_for_reddit/pages/subreddit_page.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
+import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -92,10 +93,19 @@ pushSubredditPage(BuildContext context, String subreddit) async {
 }
 
 pushPostPage(BuildContext context, PostModel post) async {
+  String token = await getAccessToken(context);
+  Provider.of<CommentProvider>(context)
+      .fetchComments(post.subredditNamePrefixed, post.id, access: token);
   // todo : fetch comments
   Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PostPage(post: post),
       ));
+}
+
+loadComments(BuildContext context, PostModel post) async {
+  String token = await getAccessToken(context);
+  Provider.of<CommentProvider>(context)
+      .fetchComments(post.subredditNamePrefixed, post.id, access: token);
 }

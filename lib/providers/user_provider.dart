@@ -28,6 +28,20 @@ class UserProvider with ChangeNotifier {
     this.after = "";
   }
 
+  getSub(String sub) {
+    String s = sub.substring(0, sub.length - 1);
+    SubredditModel subreddit = this.subreddits.firstWhere(
+        (test) => test.displayNamePrefixed == s,
+        orElse: () => null);
+
+    if (subreddit == null) {
+      // todo : fetch from api
+      return null;
+    }
+
+    return subreddit;
+  }
+
   Future<void> handleGetMe(String accessToken) async {
     _isLoadingUser = true;
     notifyListeners();
