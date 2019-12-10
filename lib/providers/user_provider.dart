@@ -50,6 +50,8 @@ class UserProvider with ChangeNotifier {
     if (accessToken == null || accessToken.isEmpty) {
       //todo : log it
       print("empty access token given");
+      _isLoadingUser = false;
+      notifyListeners();
       return;
     }
     final response = await buildRequestAndGet(url, accessToken: accessToken);
@@ -57,6 +59,8 @@ class UserProvider with ChangeNotifier {
     if (response.statusCode != 200) {
       // an error occured, show error message  & return
       print("error when loading user info");
+      _isLoadingUser = false;
+      notifyListeners();
       return;
     }
     user = UserInformationModel.fromJson(json.decode(response.body));

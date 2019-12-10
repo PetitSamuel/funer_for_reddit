@@ -5,82 +5,93 @@ import 'package:share/share.dart';
 
 Widget feedBodyItem(BuildContext context, PostModel post) {
   String authorNamePrefixed = "u/" + post.author;
-  return InkWell(
-    onTap: () => pushPostPage(context, post),
-    onDoubleTap: () => print("save post "),
-    child: Card(
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: FlatButton(
-                child: Text(post.subredditNamePrefixed),
-                onPressed: () => pushSubredditPage(
-                    context, post.subredditNamePrefixed + "/"),
+  return Container(
+    decoration: BoxDecoration(
+      //border: liked ? Border.all(color: Colors.yellowAccent) : null,
+      //color: liked ? Colors.yellowAccent : null,
+      gradient: LinearGradient(colors: <Color>[
+        Colors.black,
+        post.saved ? Colors.yellow : Colors.black,
+      ]),
+    ),
+    child: InkWell(
+      onTap: () => pushPostPage(context, post),
+      // todo : send call for saving post
+      onDoubleTap: () => print("save post"),
+      child: Card(
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: FlatButton(
+                  child: Text(post.subredditNamePrefixed),
+                  onPressed: () => pushSubredditPage(
+                      context, post.subredditNamePrefixed + "/"),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: FlatButton(
-                child: Text(authorNamePrefixed),
-                onPressed: () => print(authorNamePrefixed),
+              Expanded(
+                flex: 2,
+                child: FlatButton(
+                  child: Text(authorNamePrefixed),
+                  onPressed: () => print(authorNamePrefixed),
+                ),
+              )
+            ],
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                child: Text(post.title,
+                    style: TextStyle(fontSize: 18, color: Colors.white)),
+                margin: EdgeInsets.only(bottom: 8),
               ),
-            )
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              child: Text(post.title,
-                  style: TextStyle(fontSize: 18, color: Colors.white)),
-              margin: EdgeInsets.only(bottom: 8),
-            ),
-            if (post.selftext.isNotEmpty)
-              Text(
-                post.selftext,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-              ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_upward,
-                    // color: upArrowColor,
+              if (post.selftext.isNotEmpty)
+                Text(
+                  post.selftext,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_upward,
+                      // color: upArrowColor,
+                    ),
+                    onPressed: () {
+                      print("up");
+                    },
                   ),
-                  onPressed: () {
-                    print("up");
-                  },
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_downward,
-                    //  color: downArrowColor,
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_downward,
+                      //  color: downArrowColor,
+                    ),
+                    onPressed: () {
+                      print("down boiz");
+                    },
                   ),
-                  onPressed: () {
-                    print("down boiz");
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.comment),
-                  onPressed: () {
-                    print("push");
-                    // pushPostPage(context, post);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () async =>
-                      await Share.share('www.reddit.com${post.permalink}'),
-                ),
-              ],
-            ),
-          ],
+                  IconButton(
+                    icon: Icon(Icons.comment),
+                    onPressed: () {
+                      print("push");
+                      // pushPostPage(context, post);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.share),
+                    onPressed: () async =>
+                        await Share.share('www.reddit.com${post.permalink}'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
