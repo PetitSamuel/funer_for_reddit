@@ -29,6 +29,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<String> get accessToken async {
+    if (map == null) return "";
     if (needsTokenRefresh() && signedIn) {
       await performTokenRefresh();
     }

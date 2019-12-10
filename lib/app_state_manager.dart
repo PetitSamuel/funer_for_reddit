@@ -15,7 +15,13 @@ bool loggedIn(BuildContext context) {
 
 onStartup(BuildContext context) async {
   // methods executed to automatically load user info on app load.
-  String token = await getAccessToken(context);
+  bool signedIn = await Provider.of<AuthProvider>(context).signedInAsync;
+  print(signedIn);
+  String token = "";
+  if (signedIn) {
+    token = await getAccessToken(context);
+  }
+
   Provider.of<FeedProvider>(context).fetchPostsListing("", accessToken: token);
   if (token == null || token.isEmpty) {
     print("access token is empty, abort loading user profile/subs");

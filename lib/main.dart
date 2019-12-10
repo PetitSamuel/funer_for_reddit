@@ -68,13 +68,17 @@ class _MyHomePageState extends State<MyHomePage> {
       Provider.of<UserProvider>(context).subreddits;
 
   @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () {
+      onStartup(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool signedIn = loggedIn(context);
-    if (this.firstLoad && signedIn) {
-      // load user info on first load when signed in.
-      onStartup(context);
-      this.firstLoad = false;
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

@@ -53,6 +53,7 @@ class FeedProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> loadUnauthentificatedPosts() async {
+    print("unauth");
     String url = nonOauthUrlBuilder(
         "${this.subreddit}" + "${this.sort}.json?limit=50&after=${this.after}");
     var response = await buildRequestAndGet(url, headers: {
@@ -60,6 +61,7 @@ class FeedProvider with ChangeNotifier {
     });
     if (response.statusCode != 200) {
       // error occured, return null
+      print("null!");
       return null;
     }
     return json.decode(response.body);
