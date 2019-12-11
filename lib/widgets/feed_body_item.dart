@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/app_state_manager.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/shared/constants.dart';
+import 'package:funer_for_reddit/widgets/feed_body_item_information_widget.dart';
 import 'package:share/share.dart';
 
 Widget feedBodyItem(BuildContext context, PostModel post) {
   String authorNamePrefixed = "u/" + post.author;
   return Container(
-    decoration: BoxDecoration(
-      //border: liked ? Border.all(color: Colors.yellowAccent) : null,
-      //color: liked ? Colors.yellowAccent : null,
-      gradient: LinearGradient(colors: <Color>[
-        Colors.black,
-        post.saved ? Colors.yellow : Colors.black,
-      ]),
-    ),
     child: InkWell(
       onTap: () => pushPostPage(context, post),
       // todo : send call for saving post
@@ -55,25 +49,28 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                 ),
+              feedBodyItemInformation(post),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(
                       Icons.arrow_upward,
-                      // color: upArrowColor,
+                      color: post.likes == true ? Colors.orange : Colors.white,
                     ),
                     onPressed: () {
+                      votePost(context, post, UPVOTE_DIR);
                       print("up");
                     },
                   ),
                   IconButton(
                     icon: Icon(
                       Icons.arrow_downward,
-                      //  color: downArrowColor,
+                      color: post.likes == false ? Colors.blue : Colors.white,
                     ),
                     onPressed: () {
-                      print("down boiz");
+                      print("down");
+                      votePost(context, post, DOWNVOTE_DIR);
                     },
                   ),
                   IconButton(

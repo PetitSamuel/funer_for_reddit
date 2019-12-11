@@ -23,6 +23,39 @@ Widget singleCommentCardWidget(CommentModel comment, {double margin = 0}) {
                 ),
               ),
             ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    Icons.thumb_up,
+                  ),
+                  onPressed: () {
+                    print("up");
+                  },
+                ),
+                IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    Icons.thumb_down,
+                  ),
+                  onPressed: () {
+                    print("down");
+                  },
+                ),
+                IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    Icons.reply,
+                  ),
+                  onPressed: () {
+                    print("reply");
+                  },
+                ),
+              ],
+            ),
             for (int i = 0;
                 comment.replies != null && i < comment.replies.length;
                 i++)

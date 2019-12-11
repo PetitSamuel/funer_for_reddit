@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:funer_for_reddit/app_state_manager.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
-import 'package:funer_for_reddit/providers/comment_provider.dart';
+import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:funer_for_reddit/widgets/comment_tree.dart';
+import 'package:funer_for_reddit/widgets/feed_body_item_information_widget.dart';
 import 'package:html_unescape/html_unescape_small.dart';
-import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class PostPage extends StatefulWidget {
@@ -23,8 +24,6 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    var coms = Provider.of<CommentProvider>(context).comments;
-    if (coms != null) print(coms.length);
     var post = widget.post;
     var imgsrc = PostModel.getPreviewImageSource(post);
     return SafeArea(
@@ -163,7 +162,7 @@ class _PostPageState extends State<PostPage> {
                     ),
                   ],
                 ),
-                // feedBodyItemInformation(context, post),
+                feedBodyItemInformation(post),
                 Text(post.selftext),
                 Divider(),
                 Row(
@@ -176,16 +175,15 @@ class _PostPageState extends State<PostPage> {
                       icon: Icon(Icons.arrow_upward),
                       onPressed: () {
                         print("up");
-                        // Provider.of<FeedProvider>(context)
-                        //     .votePost(post.name, "up", post.likes);
+                        votePost(context, post, UPVOTE_DIR);
                       },
                     ),
                     IconButton(
                       icon: Icon(Icons.arrow_downward),
                       color: post.likes == false ? Colors.blue : Colors.white,
                       onPressed: () {
-                        // Provider.of<FeedProvider>(context)
-                        //     .votePost(post.name, "down", post.likes);
+                        print("down");
+                        votePost(context, post, DOWNVOTE_DIR);
                       },
                     ),
                     IconButton(

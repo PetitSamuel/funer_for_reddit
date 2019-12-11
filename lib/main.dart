@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
 import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
 import 'package:funer_for_reddit/network/http_client_overrides.dart';
+import 'package:funer_for_reddit/providers/actions_provider.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
@@ -30,6 +31,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (_) => CommentProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ActionsProvider(),
       ),
     ],
     child: MyApp(),
@@ -102,6 +106,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       login(context);
                     },
                   ),
+          ),
+          ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              ListTile(
+                title: Text("all"),
+                leading: Icon(Icons.star),
+                onTap: () {
+                  updateSubredditNoNewPage(context, "r/all/");
+                },
+              ),
+            ],
           ),
           if (signedIn) DrawerBodyLoggedIn()
         ]),

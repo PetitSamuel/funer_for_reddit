@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/pages/post_page.dart';
 import 'package:funer_for_reddit/pages/subreddit_page.dart';
+import 'package:funer_for_reddit/providers/actions_provider.dart';
 import 'package:funer_for_reddit/providers/auth_provider.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
+import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 bool loggedIn(BuildContext context) {
@@ -98,6 +100,17 @@ pushSubredditPage(BuildContext context, String subreddit) async {
   });
 }
 
+updateSubredditNoNewPage(BuildContext context, String subreddit) async {
+  String currentSub = Provider.of<FeedProvider>(context).subreddit;
+  if (currentSub == subreddit.toLowerCase()) {
+    print("not pushing !");
+    return;
+  }
+  String token = await getAccessToken(context);
+  Provider.of<FeedProvider>(context)
+      .fetchPostsListing(subreddit, accessToken: token);
+}
+
 pushPostPage(BuildContext context, PostModel post) async {
   String token = await getAccessToken(context);
   Provider.of<CommentProvider>(context)
@@ -114,4 +127,45 @@ loadComments(BuildContext context, PostModel post) async {
   String token = await getAccessToken(context);
   Provider.of<CommentProvider>(context)
       .fetchComments(post.subredditNamePrefixed, post.id, access: token);
+}
+
+votePost(BuildContext context, PostModel post, int dir) async {
+  String token = await getAccessToken(context);
+  if (token.isEmpty) {
+    print("error : empty access token");
+    return;
+  }
+  // send vote & return the direction after request is sent.
+  int status = dir == UPVOTE_DIR
+      ? await Provider.of<ActionsProvider>(context)
+          .upvote(post.name, post.likes, token)
+      : await Provider.of<ActionsProvider>(context)
+          .downvote(post.name, post.likes, token);
+
+  // call failed.
+  if (status == null) return;
+
+  // value to add to post.ups
+  int diff = status - boolToInt(post.likes);
+
+  // values to overwritte post.likes
+  bool newLikes = intToBool(status);
+  Provider.of<FeedProvider>(context).updateLikes(post, newLikes, diff);
+}
+
+int boolToInt(bool val) {
+  if (val == true) return 1;
+  if (val == false) return -1;
+  return 0;
+}
+
+bool intToBool(int v) {
+  switch (v) {
+    case 1:
+      return true;
+    case -1:
+      return false;
+    default:
+      return null;
+  }
 }

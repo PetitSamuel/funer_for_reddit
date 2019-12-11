@@ -79,6 +79,7 @@ class FeedProvider with ChangeNotifier {
 
     if (response == null) {
       print("null response when loading posts");
+      stopLoading();
       return;
     }
 
@@ -88,6 +89,17 @@ class FeedProvider with ChangeNotifier {
     p.forEach((x) => this.posts.add(x));
     this.after = response['data']['after'] ?? "";
     this.stopLoading();
+  }
+
+  updateLikes(PostModel p, bool newLikes, int diff) {
+    PostModel post =
+        this.posts.firstWhere((curr) => curr.id == p.id, orElse: () => null);
+    if (post == null) {
+      print("error : could not find post to upvote");
+      return;
+    }
+    post.ups += diff;
+    post.likes = newLikes;
   }
 
   startLoading() {

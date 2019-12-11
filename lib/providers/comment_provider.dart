@@ -15,7 +15,7 @@ class CommentProvider with ChangeNotifier {
   bool get loading => _isLoading;
   bool get hasComments => comments == null || comments.length > 0;
 
-  CommentProvider() {}
+  CommentProvider();
 
   clearComments() {
     this.after = "";
