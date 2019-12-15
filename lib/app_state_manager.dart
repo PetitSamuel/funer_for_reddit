@@ -93,10 +93,12 @@ pushSubredditPage(BuildContext context, String subreddit) async {
       context,
       MaterialPageRoute(
         builder: (context) => SubredditPage(subreddit: subreddit),
-      )).then((value) async {
-    String token = await getAccessToken(context);
-    Provider.of<FeedProvider>(context)
-        .fetchPostsListing("", accessToken: token);
+      )).then((value) {
+    /*
+          todo : maybe we dont need to reload every time. Should find a system to return back to same page
+          maybe through a stack of posts & current post tracker
+        */
+    loadPosts(context);
   });
 }
 

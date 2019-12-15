@@ -26,13 +26,13 @@ dependencies:
   provider: ^3.1.0
   flutter_webview_plugin: ^0.3.8
   http: ^0.12.0+2
-  cached_network_image: ^1.1.3
+  cached_network_image: ^2.0.0-rc
   flutter_secure_storage: ^3.3.1+1
   uuid: ^2.0.4
   share: ^0.6.3+1
   html_unescape: ^1.0.1+3
   timeago: ^2.0.21
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

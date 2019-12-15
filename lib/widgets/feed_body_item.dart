@@ -22,8 +22,10 @@ Widget feedBodyItem(BuildContext context, PostModel post) {
                 flex: 2,
                 child: FlatButton(
                   child: Text(post.subredditNamePrefixed),
-                  onPressed: () => pushSubredditPage(
-                      context, post.subredditNamePrefixed + "/"),
+                  onPressed: () {
+                    pushSubredditPage(
+                        context, post.subredditNamePrefixed + "/");
+                  },
                 ),
               ),
               Expanded(

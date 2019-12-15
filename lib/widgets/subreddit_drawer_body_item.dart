@@ -34,13 +34,9 @@ Widget subredditDrawerBodyItem(BuildContext context, SubredditModel current) {
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
     onTap: () {
-      // todo : handle tap
+      // pop drawer
+      // Navigator.pop(context);
       pushSubredditPage(context, current.displayNamePrefixed + "/");
-      /*
-      Provider.of<FeedProvider>(context)
-          .setSubredditAndFetchWithClear(current.url);
-      Navigator.pop(context);
-      */
     },
   );
 }
