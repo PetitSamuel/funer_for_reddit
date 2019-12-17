@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/app_actions_manager.dart';
-import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:funer_for_reddit/widgets/comment_tree.dart';
 import 'package:funer_for_reddit/widgets/feed_body_item_information_widget.dart';

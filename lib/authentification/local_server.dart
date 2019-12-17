@@ -5,7 +5,7 @@ class LocalServer {
   final String code;
 
   LocalServer({this.code});
-  // listen to local host requests & return a stream containing the access code.
+  // listen to local host requests & return a stream containing the access code & the uuid.
   Future<Stream<String>> server() async {
     final StreamController<String> onCode = new StreamController();
     HttpServer server =

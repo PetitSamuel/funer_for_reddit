@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/models/comments/comment_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 
 /*
  * Widget for a single comment. Recursively generates reply comments.

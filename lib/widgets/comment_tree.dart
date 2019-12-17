@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/app_actions_manager.dart';
-import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
-import 'package:funer_for_reddit/models/comments/comment_model.dart';
 import 'package:funer_for_reddit/widgets/single_comment_card_widget.dart';
 import 'package:provider/provider.dart';
 

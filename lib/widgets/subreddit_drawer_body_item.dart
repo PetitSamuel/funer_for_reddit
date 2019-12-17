@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/app_actions_manager.dart';
-import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 
 /*
  * Widget for a single widget element in the body of the drawer.

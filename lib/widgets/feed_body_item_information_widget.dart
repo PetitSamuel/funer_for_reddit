@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/shared/date_time_helper_functions.dart';
 import 'package:funer_for_reddit/shared/number_formatting_helper_functions.dart';
 

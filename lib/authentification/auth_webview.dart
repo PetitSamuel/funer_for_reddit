@@ -16,7 +16,7 @@ class AuthWebview extends StatelessWidget {
       child: WebviewScaffold(
         url: url,
         appBar: AppBar(
-          title: Text('Logging into reddit.'),
+          title: Text('Sign into reddit.'),
         ),
         scrollBar: true,
         withJavascript: true,

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/app_actions_manager.dart';
-import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
 import 'package:funer_for_reddit/widgets/subreddit_drawer_body_item.dart';
 import 'package:provider/provider.dart';

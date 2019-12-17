@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/models/subreddit_models/subscribed_subreddit_model.dart';
-import 'package:funer_for_reddit/models/user_models/user_information_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/shared/requests_shared.dart';
 
 class UserProvider with ChangeNotifier {

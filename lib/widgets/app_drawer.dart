@@ -35,6 +35,7 @@ class AppDrawer extends StatelessWidget {
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
+            // todo : add more options here
             ListTile(
               title: Text("all"),
               leading: Icon(Icons.star),

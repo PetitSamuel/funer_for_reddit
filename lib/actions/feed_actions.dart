@@ -6,6 +6,13 @@ import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:provider/provider.dart';
 
 /*
+  File manages required actions for the feed.
+  If a user action requires the app to load new posts,
+  it can simply call the helper method here, the method will then delegate 
+  all the required actions to the providers.
+*/
+
+/*
   Load new posts without pushing a new subreddit page.
 */
 updateSubredditNoNewPage(BuildContext context, String subreddit) async {

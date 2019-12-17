@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:funer_for_reddit/actions/auth_actions.dart';
-import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/pages/post_page.dart';
 import 'package:funer_for_reddit/providers/actions_provider.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:provider/provider.dart';
+
+/*
+  File manages required actions for a post.
+  If a user action requires the app to send a comment or upvote,
+  it can simply call the helper method here, the method will then delegate 
+  all the required actions to the providers.
+*/
 
 /*
   Push single post page to navigation stack.

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/models/post_models/post_model.dart';
+import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/secret/secret.dart';
 import 'package:funer_for_reddit/shared/requests_shared.dart';
 
