@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/app_state_manager.dart';
+import 'package:funer_for_reddit/app_actions_manager.dart';
 import 'package:funer_for_reddit/models/post_models/post_model.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/models/comments/comment_model.dart';

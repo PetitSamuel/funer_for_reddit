@@ -67,7 +67,7 @@ class FeedProvider with ChangeNotifier {
     return json.decode(response.body);
   }
 
-  Future<void> fetchPostsListing(String sub, {String accessToken = ""}) async {
+  Future<void> fetchPosts(String sub, {String accessToken = ""}) async {
     startLoading();
     this.subreddit = sub.toLowerCase();
     this.posts.clear();
