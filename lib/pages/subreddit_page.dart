@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/models/models_export.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
-import 'package:funer_for_reddit/widgets/feed_body.dart';
+import 'package:funer_for_reddit/widgets/feed/feed_body.dart';
 import 'package:provider/provider.dart';
 
 class SubredditPage extends StatefulWidget {

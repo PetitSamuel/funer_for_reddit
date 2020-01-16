@@ -1,12 +1,11 @@
-/*
-  Provider for executing actions such as upvote, posting & such.
-*/
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:funer_for_reddit/shared/constants.dart';
 import 'package:funer_for_reddit/shared/requests_shared.dart';
 
+/*
+  Provider for executing actions such as upvote, posting & such.
+*/
 class ActionsProvider with ChangeNotifier {
   bool isVoteLoading = false;
 

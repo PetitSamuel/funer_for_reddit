@@ -7,8 +7,8 @@ import 'package:funer_for_reddit/providers/auth_provider.dart';
 import 'package:funer_for_reddit/providers/comment_provider.dart';
 import 'package:funer_for_reddit/providers/feed_provider.dart';
 import 'package:funer_for_reddit/providers/user_provider.dart';
-import 'package:funer_for_reddit/widgets/app_drawer.dart';
-import 'package:funer_for_reddit/widgets/feed_body.dart';
+import 'package:funer_for_reddit/widgets/drawer/app_drawer.dart';
+import 'package:funer_for_reddit/widgets/feed/feed_body.dart';
 import 'package:provider/provider.dart';
 
 import 'package:funer_for_reddit/app_actions_manager.dart';

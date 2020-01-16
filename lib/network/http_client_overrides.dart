@@ -1,6 +1,6 @@
 import 'dart:io';
 
-// Accepts all certificates, not ideal but does the tick to login
+// Accepts all certificates, not ideal but does the trick
 class HttpClientOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext context) {

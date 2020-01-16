@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:funer_for_reddit/app_actions_manager.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:funer_for_reddit/models/models_export.dart';
-import 'package:funer_for_reddit/shared/constants.dart';
-import 'package:funer_for_reddit/widgets/comment_tree.dart';
-import 'package:funer_for_reddit/widgets/feed_body_item_information_widget.dart';
+import 'package:funer_for_reddit/widgets/comment/comment_tree.dart';
+import 'package:funer_for_reddit/widgets/post/post_bottom_actions_widget.dart';
+import 'package:funer_for_reddit/widgets/post/post_header_content_widget.dart';
+import 'package:funer_for_reddit/widgets/post/post_metrics_information_widget.dart';
 import 'package:html_unescape/html_unescape_small.dart';
-import 'package:share/share.dart';
 
 class PostPage extends StatefulWidget {
   PostPage({Key key, this.post}) : super(key: key);
@@ -25,7 +25,6 @@ class _PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     var post = widget.post;
-    var imgsrc = PostModel.getPreviewImageSource(post);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -137,76 +136,14 @@ class _PostPageState extends State<PostPage> {
             margin: EdgeInsets.only(top: 10, bottom: 10, left: 8, right: 8),
             child: ListView(
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    if (imgsrc != null)
-                      Flexible(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 12, top: 8),
-                          child: Image.network(
-                            HtmlUnescape().convert(imgsrc.url),
-                          ),
-                        ),
-                        flex: 4,
-                      ),
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 12, top: 4),
-                        child: Text(
-                          post.title + '\n',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      flex: 12,
-                    ),
-                  ],
-                ),
+                postHeaderContent(post),
                 feedBodyItemInformation(post),
-                Text(post.selftext),
-                Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    IconButton(
-                      color: post.likes == true
-                          ? Colors.orangeAccent
-                          : Colors.white,
-                      icon: Icon(Icons.arrow_upward),
-                      onPressed: () {
-                        print("up");
-                        votePost(context, post, UPVOTE_DIR);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_downward),
-                      color: post.likes == false ? Colors.blue : Colors.white,
-                      onPressed: () {
-                        print("down");
-                        votePost(context, post, DOWNVOTE_DIR);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.star),
-                      onPressed: () => print("starred"),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.share),
-                      onPressed: () async =>
-                          await Share.share('www.reddit.com${post.permalink}'),
-                    ),
-                  ],
+                Html(
+                  data:
+                      """${HtmlUnescape().convert(post.selftextHtml ?? "")}""",
                 ),
-                /*
-                if (Provider.of<CommentsProvider>(context).isLoading)
-                  Center(
-                    child: LinearProgressIndicator(),
-                  ),
-                if (Provider.of<CommentsProvider>(context).hasComments)
-                  commentsTree(
-                      context, Provider.of<CommentsProvider>(context).comments),
-
-                      */
+                Divider(),
+                postBottomActions(context, post),
                 CommentTree(post),
               ],
             ),

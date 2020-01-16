@@ -19,15 +19,25 @@ class AuthProvider with ChangeNotifier {
   final storage = new FlutterSecureStorage();
   Map<String, String> map;
 
+  /*
+   return the sign in status from that map. 
+   May return the wrong value if map has not finished initialisation.
+  */
   bool get signedIn {
     if (map == null) return false;
     return (map['signed_in'] ?? "") == "true";
   }
 
+  /*
+    Return the sign in status from the local storage.
+    Only useful if need to access the sign in status 
+    before map has finished initialisation.
+  */
   Future<bool> get signedInAsync async {
     return (await this.storage.read(key: 'signed_in') ?? "") == "true";
   }
 
+  // Return access token, also checks if current token needs refresh & refresh if needed.
   Future<String> get accessToken async {
     if (map == null) return "";
     if (needsTokenRefresh() && signedIn) {
