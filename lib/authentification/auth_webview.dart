@@ -4,6 +4,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 /*
   The webview widget used to load the reddit oauth page.
+  todo : 
 */
 class AuthWebview extends StatelessWidget {
   final String url;

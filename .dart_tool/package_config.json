@@ -27,7 +27,7 @@
     },
     {
       "name": "cached_network_image",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/cached_network_image-2.0.0-rc.1",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/cached_network_image-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -63,7 +63,7 @@
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.3",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -99,7 +99,7 @@
     },
     {
       "name": "flutter_webview_plugin",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.10",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.3.8",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -153,7 +153,7 @@
     },
     {
       "name": "path_provider",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.5.1",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.4.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -189,7 +189,7 @@
     },
     {
       "name": "share",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.6.3+5",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/share-0.6.3+1",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -207,7 +207,7 @@
     },
     {
       "name": "sqflite",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.1.8",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-1.1.7+1",
       "packageUri": "lib/",
       "languageVersion": "2.5"
     },
@@ -231,9 +231,9 @@
     },
     {
       "name": "synchronized",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-2.1.1",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-2.1.0+1",
       "packageUri": "lib/",
-      "languageVersion": "2.5"
+      "languageVersion": "2.1"
     },
     {
       "name": "term_glyph",
@@ -249,7 +249,7 @@
     },
     {
       "name": "timeago",
-      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/timeago-2.0.22",
+      "rootUri": "file:///home/sam/flutter/.pub-cache/hosted/pub.dartlang.org/timeago-2.0.21",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -284,7 +284,7 @@
       "languageVersion": "2.2"
     }
   ],
-  "generated": "2019-12-20T04:54:27.938350Z",
+  "generated": "2020-02-06T11:05:42.091514Z",
   "generator": "pub",
   "generatorVersion": "2.7.0-dev.2.1.flutter-8b8894648f"
 }
